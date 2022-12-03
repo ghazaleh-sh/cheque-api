@@ -1,0 +1,149 @@
+# ===================================================================
+# Spring Boot configuration for the "dev" profile.
+#
+# This configuration overrides the application.yml file.
+#
+# More information on profiles: https://www.jhipster.tech/profiles/
+# More information on configuration properties: https://www.jhipster.tech/common-application-properties/
+# ===================================================================
+
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
+logging:
+  level:
+    ROOT: DEBUG
+    tech.jhipster: DEBUG
+    org.hibernate.SQL: DEBUG
+    ir.co.sadad.cheque: DEBUG
+
+spring:
+  devtools:
+    restart:
+      enabled: true
+      additional-exclude: static/**
+    livereload:
+      enabled: false # we use Webpack dev server + BrowserSync for livereload
+  jackson:
+    serialization:
+      indent-output: true
+
+  datasource:
+    username: db2inst1
+    password: 123456
+    url: jdbc:db2://192.168.97.134:50000/BMI_API
+    driver-class-name: com.ibm.db2.jcc.DB2Driver
+    hikari:
+      schema: BMI_ACCOUNT
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.DB2Dialect
+        hibernate.default_schema: BMI_ACCOUNT
+
+feign:
+  client:
+    sadad-rest-url: http://172.30.43.12:9095
+    cheque-url: http://172.30.40.9
+    bam-api: http://localhost:9081/services/rest/api
+    sso-url: http://185.135.30.10:9443
+    shahab-url: http://
+    allocating-path: /esservicetest/api/WebMQ/558
+    sayadRequest-path: /eservice/api/WebMQ/SayadRequest
+    report-path: /esservicetest/api/WebMQ/2645
+    inquiry-status-path: /esServiceTest/api/v1/chakad/inquiryStatus
+    deactivation-path: /esServiceTest/api/v1/chakad/deactivation
+    activation-path: /esServiceTest/api/v1/chakad/activation
+    cartable-path: /esServiceTest/api/v1/chakad/cartable
+    issue-cheque-path: /esServiceTest/api/v1/chakad/issue
+    transfer-cheque-path: /esServiceTest/api/v1/chakad/transfer
+    sayad-report-path: /esservicetest/api/WebMQ/SayadReport
+    sayad-request-path: /esservicetest/api/WebMQ/SayadRequest
+    batch-inquiry-path: /esservicetest/api/WebMQ/
+    sheet-inquiry-path: /esservicetest/api/WebMQ/
+    inquiry-path: /api/icms/v1/iranian/individual/shahab/inquiry
+    track-path: /api/icms/v1/iranian/individual/shahab/track
+  #      appName: key
+  #      appPassword: secret
+
+sso:
+  grant-type: client_credentials
+  scopes: svc-mgmt-sama-cheq-boun-cust-info-inq cheque-sayad-report cheque-sayad-request svc-mgmt-samat-inq-main cheque-allocating-estelam svc-mgmt-gutr-guar-inq
+  client-name: microservice-baam-cheque-client
+  clientPassword: hC5cN4xB6vJ1bG2cJ3bG1fI6mD6fF1eK1bD2fE2cW1
+
+  messages:
+    cache-duration: PT1S # 1 second, see the ISO 8601 standard
+  thymeleaf:
+    cache: false
+  sleuth:
+    sampler:
+      probability: 1 # report 100% of traces
+  zipkin: # Use the "zipkin" Maven profile to have the Spring Cloud Zipkin dependencies
+    base-url: http://localhost:9411
+    enabled: false
+    locator:
+      discovery:
+        enabled: true
+  okhttp:
+    enabled: true
+
+server:
+  port: 8081
+
+#management:
+#  endpoint:
+#    shutdown:
+#      enabled: true
+
+# ===================================================================
+# JHipster specific properties
+#
+# Full reference is available at: https://www.jhipster.tech/common-application-properties/
+# ===================================================================
+
+jhipster:
+  cache: # Cache configuration
+    hazelcast: # Hazelcast distributed cache
+      time-to-live-seconds: 3600
+      backup-count: 1
+  # CORS is disabled by default on microservices, as you should access them through a gateway.
+  # If you want to enable it, please uncomment the configuration below.
+  # cors:
+  #   allowed-origins: "http://localhost:9000,https://localhost:9000"
+  #   allowed-methods: "*"
+  #   allowed-headers: "*"
+  #   exposed-headers: "Authorization,Link,X-Total-Count"
+  #   allow-credentials: true
+  #   max-age: 1800
+  security:
+    authentication:
+      jwt:
+        # This token must be encoded using Base64 and be at least 256 bits long (you can type `openssl rand -base64 64` on your command line to generate a 512 bits one)
+        base64-secret: ODYwZjhiMjU5MzQ2NWMwYjgxNjgwNTZkNzM5NjU2NWU5M2FiYmVkM2JjMjE2YWJhN2I1NWY2MThjNGJlZTYyMjY3MDNhODY1MjFhODZhMWJkZGU3OGNmOWQ1NGM0OTBjNWUxMzI0MjI1NmJjZDk0YmNkM2FjYWY5ODY3ZTVkZWY=
+        # Token is valid 24 hours
+        token-validity-in-seconds: 86400
+        token-validity-in-seconds-for-remember-me: 2592000
+  logging:
+    use-json-format: false # By default, logs are not in Json format
+    logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
+      enabled: false
+      host: localhost
+      port: 5000
+      queue-size: 512
+# ===================================================================
+# Application specific properties
+# Add your own application properties here, see the ApplicationProperties class
+# to have type-safe configuration, like in the JHipsterProperties above
+#
+# More documentation is available at:
+# https://www.jhipster.tech/common-application-properties/
+# ===================================================================
+
+# application:
