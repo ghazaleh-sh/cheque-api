@@ -1,10 +1,12 @@
 package ir.co.sadad.cheque.web.rest.external.dto.request.chakad;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Sign {
 
     @NotNull(message = "chakad.error.cms.is.mandatory")

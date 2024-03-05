@@ -39,22 +39,22 @@ public class ChakadTransferInfoDto {
     @NotNull(message = "chakad.error.signers.is.mandatory")
     private List<ChakadSignerDto> signers;
 
-    /**
-     * نظر دارنده درباره انتقال در حالت ذينفع مشترك؛
-     * ٠ :انتقال را رد كرده است
-     * ١ :انتقال را تائيد كرده است .
-     * در حالتي كه ذينفع مشترك نباشد اين داده بايد مقدار ١ داشته
-     * باشد.
-     * در حالت ذينفع مشترك، چنانچه ارسال كننده درخواست انتقال را
-     * رد كرده باشد، به ليست دريافت كنندگان توجه نمي شود. در غير
-     * اين صورت ارسال كننده درخواست مي بايست ليست يكساني با
-     * ليست اعلامي توسط اولين ذينفع را ارسال كرده باشد .در حالتي
-     * كه ليست چند امضاء كننده ارسال مي شود، چنانچه همه تائيد
-     * كرده باشند تائيد و در غير اينصورت رد ارسال شود.
-     * require
-     */
-    @NotNull(message = "chakad.error.accept.transfer.is.mandatory")
-    private Integer acceptTransfer;
+//    /**
+//     * نظر دارنده درباره انتقال در حالت ذينفع مشترك؛
+//     * ٠ :انتقال را رد كرده است
+//     * ١ :انتقال را تائيد كرده است .
+//     * در حالتي كه ذينفع مشترك نباشد اين داده بايد مقدار ١ داشته
+//     * باشد.
+//     * در حالت ذينفع مشترك، چنانچه ارسال كننده درخواست انتقال را
+//     * رد كرده باشد، به ليست دريافت كنندگان توجه نمي شود. در غير
+//     * اين صورت ارسال كننده درخواست مي بايست ليست يكساني با
+//     * ليست اعلامي توسط اولين ذينفع را ارسال كرده باشد .در حالتي
+//     * كه ليست چند امضاء كننده ارسال مي شود، چنانچه همه تائيد
+//     * كرده باشند تائيد و در غير اينصورت رد ارسال شود.
+//     * require
+//     */
+//    @NotNull(message = "chakad.error.accept.transfer.is.mandatory")
+//    private Integer acceptTransfer;
 
     /**
      * شرح انتقال چك
@@ -78,30 +78,30 @@ public class ChakadTransferInfoDto {
     @NotNull(message = "chakad.error.reason.is.mandatory.in.transfer")
     private String reason;
 
-    /**
-     * كد شناسايي دارنده فعلي چك
-     * با توجه به identifierType اعتبار سنجي مي شود؛
-     * مشتري حقيقي: كد ملي (١٠رقم)
-     * مشتري حقوقي: شناسه ملي شركت (١١رقم)
-     * اتباع بيگانه حقيقي و حقوقي: شماره فراگير: (٨ الي١٥ رقم)
-     * require
-     */
-    @NotNull(message = "chakad.error.identifier.for.transfer.is.mandatory")
-    private String identifier;
-    /**
-     * نوع كد شناسايي دارنده فعلي چك
-     * ١ :مشتري حقيقي
-     * ٢ :مشتري حقوقي
-     * ٣ :اتباع بيگانه حقيقي
-     * ٤ :اتباع بيگانه حقوقي
-     * require
-     */
-    @NotNull(message = "chakad.error.identifier.type.for.transfer.is.mandatory")
-    private Integer identifierType;
-
-    /**
-     * براي اشخاص حقوقي مقداردهي به اين فيلد جهت كنترل
-     * امضاداران اجباري مي باشد.
-     */
-    private String account;
+//    /**
+//     * كد شناسايي دارنده فعلي چك
+//     * با توجه به identifierType اعتبار سنجي مي شود؛
+//     * مشتري حقيقي: كد ملي (١٠رقم)
+//     * مشتري حقوقي: شناسه ملي شركت (١١رقم)
+//     * اتباع بيگانه حقيقي و حقوقي: شماره فراگير: (٨ الي١٥ رقم)
+//     * require
+//     */
+//    @NotNull(message = "chakad.error.identifier.for.transfer.is.mandatory")
+//    private String identifier;
+//    /**
+//     * نوع كد شناسايي دارنده فعلي چك
+//     * ١ :مشتري حقيقي
+//     * ٢ :مشتري حقوقي
+//     * ٣ :اتباع بيگانه حقيقي
+//     * ٤ :اتباع بيگانه حقوقي
+//     * require
+//     */
+//    @NotNull(message = "chakad.error.identifier.type.for.transfer.is.mandatory")
+//    private Integer identifierType;
+//
+//    /**
+//     * براي اشخاص حقوقي مقداردهي به اين فيلد جهت كنترل
+//     * امضاداران اجباري مي باشد.
+//     */
+//    private String account;
 }

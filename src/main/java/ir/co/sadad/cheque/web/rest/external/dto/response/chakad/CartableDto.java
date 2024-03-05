@@ -2,6 +2,8 @@ package ir.co.sadad.cheque.web.rest.external.dto.response.chakad;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * info for cartable
  */
@@ -116,4 +118,15 @@ public class CartableDto {
      * true :چك ذينفع ديگري نيز دارد.
      */
     private Boolean shared;
+
+    private String reason;
+    private String toIban;
+    private List<ChequeOwner> chequeOwner;
+
+    @Data
+    public static class ChequeOwner {
+        private String idCode;
+        private Integer idType;
+        private String name;
+    }
 }

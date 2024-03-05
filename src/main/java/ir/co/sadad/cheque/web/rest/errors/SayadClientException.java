@@ -11,10 +11,17 @@ import static ir.co.sadad.cheque.web.rest.errors.ErrorConstants.sayadExceptions;
 public class SayadClientException extends GeneralException {
 
     public SayadClientException(int responseCode) {
-        super(Status.UNAVAILABLE_FOR_LEGAL_REASONS);
+        super(Status.BAD_REQUEST);
         this.message = sayadExceptions().get(responseCode);
         this.code = Integer.toString(responseCode);
         if (StringUtils.isBlank(message))
             message = "server.external.exception.not.translate";
+    }
+
+    public SayadClientException(String responseCode) {
+        super(Status.BAD_REQUEST);
+        String exceptionTemplate = "server.external.exception.";
+        this.message = exceptionTemplate + responseCode;
+        this.code = responseCode;
     }
 }

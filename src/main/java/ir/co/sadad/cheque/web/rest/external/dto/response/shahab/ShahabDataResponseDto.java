@@ -8,4 +8,6 @@ public class ShahabDataResponseDto {
     //    private String trackCode;
 //    private PersonInfo personInfo;
     private String shahabCode;
+
+    private CustomerInfoDto customerInfo;
 }

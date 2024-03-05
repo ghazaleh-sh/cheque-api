@@ -37,11 +37,11 @@ public class NationalCodeValidator implements ConstraintValidator<NationalCode, 
             if (idType.equals(CustomerIdType.INDIVIDUAL.getKey()))
                 return checkMelliCode(identifierCode);
 
-            if (idType.equals(CustomerIdType.LEGAL.getKey()) || idType.equals(CustomerIdType.SHAHAB_LEGAL.getKey()))
+            if (idType.equals(CustomerIdType.CORPORATE.getKey()) || idType.equals(CustomerIdType.SHAHAB_CORPORATE.getKey()))
                 return identifierCode.length() == 11;
 
             if (idType.equals(CustomerIdType.FOREIGN_INDIVIDUAL.getKey()) ||
-                idType.equals(CustomerIdType.FOREIGN_LEGAL.getKey()) ||
+                idType.equals(CustomerIdType.FOREIGN_CORPORATE.getKey()) ||
                 idType.equals(CustomerIdType.SHAHAB_FOREIGN_INDIVIDUAL.getKey()))
                 return identifierCode.length() >= 8 && identifierCode.length() <= 15;
 

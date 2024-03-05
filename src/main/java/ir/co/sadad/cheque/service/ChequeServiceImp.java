@@ -90,7 +90,7 @@ public class ChequeServiceImp implements ChequeService, AccessTokenProcessor {
         }
         /* 4- Check Remained Cheque */
         String chequeRemainedResult = hasRemainedTwentyPercentCheque(passwordToken, chequeRequestDto.getAccountNo(), userSsn);
-        if (hasRemainedTwentyPercentCheque(passwordToken, chequeRequestDto.getAccountNo(), userSsn) != null) {
+        if (chequeRemainedResult != null) {
             ChequeRequestResponse chequeRequestResponse = new ChequeRequestResponse();
             chequeRequestResponse.setStatus(HttpStatus.NO_CONTENT.value());
             chequeRequestResponse.setErrorDescription(chequeRemainedResult);
@@ -111,11 +111,70 @@ public class ChequeServiceImp implements ChequeService, AccessTokenProcessor {
         cheque.setRequestInputType(RequestInputType.BAAM);
         cheque.setRegisterDateTime(new Date());
         cheque.setLastUpdateDateTime(new Date());
-        cheque.setAccountId(chequeRequestDto.getAccountNo());
         cheque.setIban(selectedAccountDto.getIban());
-        cheque.setAccountId(chequeRequestDto.getAccountNo());
+        cheque.setAccountId(chequeRequestDto.getAccountNo().trim());
         cheque.setBranchCode(selectedAccountDto.getBranchCode());
-        cheque.setNationalCode(userSsn);
+        cheque.setNationalCode(userSsn.trim());
+        chequeRepository.save(cheque);
+
+        ChequeInfo chequeInfo = new ChequeInfo();
+        chequeInfo.setAccountNo(selectedAccountDto.getAccountNo());
+        chequeInfo.setIban(selectedAccountDto.getIban());
+        chequeInfo.setBranchCode(selectedAccountDto.getBranchCode());
+
+        ChequeRequestResponse chequeRequestResponse = new ChequeRequestResponse();
+        chequeRequestResponse.setStatus(HttpStatus.OK.value());
+        chequeRequestResponse.setSuccess(chequeInfo);
+
+        return chequeRequestResponse;
+    }
+
+    @Override
+    public ChequeRequestResponse chequeRequestV2(ChequeRequestDto chequeRequestDto) {
+        String userSsn = getCurrentUserInfo().getBmiOAuth2User().getSsn();
+        String passwordToken = getCurrentUserInfo().getAccessToken();
+        String clientToken = ssoClientTokenManager.getClientToken();
+
+        /* Check for duplicate requests*/
+        List<ChequeStatus> chequeStatusList = Stream
+            .of(ChequeStatus.REGISTER_REQUEST, ChequeStatus.CONFIRM_REQUEST, ChequeStatus.WAITING)
+            .collect(Collectors.toList());
+        if (!chequeRepository.findAllByNationalCodeAndChequeStatusIn(userSsn, chequeStatusList).isEmpty()) {
+            throw new ChequeException(ChequeErrorType.DUPLICATE_REQUEST);
+        }
+
+        /* 1- check is the first check */
+        if (isFirstCheque(passwordToken)) {
+            throw new ChequeException(ChequeErrorType.DUPLICATE_REQUEST);
+        }
+        /* 2- Check Overdue Facilities */
+        if (!hasOverdueFacilities(clientToken, userSsn).isEmpty()) {
+            throw new ChequeException(ChequeErrorType.HAS_OVER_DUE_FACILITIES);
+        }
+
+        /* 3- Check Returned Cheque */
+        if (!hasReturnedCheque(clientToken, userSsn).isEmpty()) {
+            throw new ChequeException(ChequeErrorType.HAS_RETURNED_CHEQUE);
+        }
+        /* 4- Check Remained Cheque */
+        String chequeRemainedResult = hasRemainedTwentyPercentCheque(passwordToken, chequeRequestDto.getAccountNo(), userSsn);
+        if (chequeRemainedResult != null) {
+            throw new ChequeException(chequeRemainedResult, ChequeErrorType.HAS_REMAINED_CHEQUE);
+        }
+
+        /**Register Cheque Service */
+        SelectedAccountDto selectedAccountDto = getAccount(passwordToken, chequeRequestDto.getAccountNo());
+        chequeRegister(clientToken, selectedAccountDto.getIban(), userSsn);
+        Cheque cheque = new Cheque();
+        cheque.setChequeAccountType(ChequeAccountType.SINGLE);
+        cheque.setChequeStatus(ChequeStatus.REGISTER_REQUEST);
+        cheque.setRequestInputType(RequestInputType.BAAM);
+        cheque.setRegisterDateTime(new Date());
+        cheque.setLastUpdateDateTime(new Date());
+        cheque.setIban(selectedAccountDto.getIban());
+        cheque.setAccountId(chequeRequestDto.getAccountNo().trim());
+        cheque.setBranchCode(selectedAccountDto.getBranchCode());
+        cheque.setNationalCode(userSsn.trim());
         chequeRepository.save(cheque);
 
         ChequeInfo chequeInfo = new ChequeInfo();
@@ -189,7 +248,7 @@ public class ChequeServiceImp implements ChequeService, AccessTokenProcessor {
             topByIban = chequeRepository.findTopByIban(iban);
             if (topByIban == null) {
                 throw new ChequeException(ChequeErrorType.IBAN_WITHOUT_CHEQUE_REQUEST);
-            } else if (!topByIban.getNationalCode().equals(getCurrentUserInfo().getBmiOAuth2User().getSsn())) {
+            } else if (!topByIban.getNationalCode().trim().equals(getCurrentUserInfo().getBmiOAuth2User().getSsn())) {
                 throw new ChequeException(ChequeErrorType.LACK_OF_ACCESS_TO_ACCOUNT);
             }
         } catch (NoResultException ex) {
@@ -198,24 +257,8 @@ public class ChequeServiceImp implements ChequeService, AccessTokenProcessor {
         }
 
         ChequeResponse chequeResponse = callChequeReport(timeInterval, topByIban);
-
-        ChequeData maxTime = chequeResponse
-            .getChequeDataList()
-            .stream()
-            .max(Comparator.comparing(ChequeData::getUpdateTime))
-            .orElseThrow(NoSuchElementException::new);
-        topByIban.setLastUpdateDateTime(new Date((maxTime.getUpdateTime())));
-
-        chequeResponse
-            .getChequeDataList()
-            .forEach(chequeData -> {
-                if (!chequeData.getChequeNumber().equals("") && chequeData.getChequeNumber().contains("-")) {
-                    String[] chequeNumber = chequeData.getChequeNumber().split("-");
-                    topByIban.setChequeFirstNumber(chequeNumber[0]);
-                    topByIban.setChequeLastNumber(chequeNumber[1]);
-                }
-            });
-
+        updateLastUpdateDateTime(topByIban, chequeResponse);
+        updateChequeNumbers(topByIban, chequeResponse);
         chequeRepository.save(topByIban);
         return chequeResponse;
     }
@@ -434,6 +477,29 @@ public class ChequeServiceImp implements ChequeService, AccessTokenProcessor {
             ChequeErrorType chequeErrorType = ChequeErrorType.valueOfResultCode(report.getMessageCode());
             throw new ChequeException(chequeErrorType);
         }
+    }
+
+    private void updateLastUpdateDateTime(Cheque topByIban, ChequeResponse chequeResponse) {
+        ChequeData maxTime = chequeResponse
+            .getChequeDataList()
+            .stream()
+            .max(Comparator.comparing(ChequeData::getUpdateTime))
+            .orElseThrow(NoSuchElementException::new);
+        topByIban.setLastUpdateDateTime(new Date(maxTime.getUpdateTime()));
+    }
+
+    private void updateChequeNumbers(Cheque topByIban, ChequeResponse chequeResponse) {
+        chequeResponse
+            .getChequeDataList()
+            .stream()
+            .filter(chequeData -> !chequeData.getChequeNumber().isEmpty() && chequeData.getChequeNumber().contains("-"))
+            .findFirst()
+            .ifPresent(chequeData -> {
+                String[] chequeNumber = chequeData.getChequeNumber().split("-");
+                topByIban.setChequeFirstNumber(chequeNumber[0]);
+                topByIban.setChequeLastNumber(chequeNumber[1]);
+                topByIban.setAccountId(topByIban.getAccountId().trim());
+            });
     }
 
     private String initializeMessage(String message, Locale locale) {

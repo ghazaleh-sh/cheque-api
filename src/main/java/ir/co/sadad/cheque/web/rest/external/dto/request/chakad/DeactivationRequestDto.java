@@ -1,9 +1,6 @@
 package ir.co.sadad.cheque.web.rest.external.dto.request.chakad;
 
-import ir.co.sadad.cheque.web.rest.external.dto.response.bam.CustomerDto;
 import lombok.Data;
-
-import java.util.List;
 
 /**
  * dto for deactivation of chakad

@@ -1,5 +1,6 @@
 package ir.co.sadad.cheque.web.rest.external;
 
+import ir.co.sadad.cheque.domain.dto.ChakadAcceptRequestDto;
 import ir.co.sadad.cheque.web.rest.external.config.ChakadClientConfig;
 import ir.co.sadad.cheque.web.rest.external.dto.request.chakad.*;
 import ir.co.sadad.cheque.web.rest.external.dto.response.SayadRequestResponseDto;
@@ -7,12 +8,9 @@ import ir.co.sadad.cheque.web.rest.external.dto.response.chakad.*;
 import org.apache.commons.lang.ObjectUtils;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
-@FeignClient(value = "ChakadClient", url = "${feign.client.cheque-url}", configuration = {ChakadClientConfig.class})
+@FeignClient(value = "ChakadClient", url = "${feign.client.chakad-url}", configuration = {ChakadClientConfig.class})
 public interface ChakadClient {
 
     @RequestMapping(method = RequestMethod.POST, value = "${feign.client.activation-path}", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -39,7 +37,7 @@ public interface ChakadClient {
      * @return cartable
      */
     @RequestMapping(method = RequestMethod.POST, value = "${feign.client.cartable-path}")
-    ChakadResponseDto<CartableDto> cartable(
+    ChakadResponseDto<CartableResponseDto> cartable(
         @RequestHeader("Authorization") String bearerToken,
         @RequestHeader("callerTerminalName") String callerTerminalName,
         @RequestBody CartableRequestDto cartableRequest
@@ -86,72 +84,61 @@ public interface ChakadClient {
      * @return result of transfer cheques
      */
     @RequestMapping(method = RequestMethod.POST, value = "${feign.client.transfer-cheque-path}")
-    ChakadResponseDto<TransferChequeResponseDto> transferCheques(
+    ChakadTransferTotalResponseDto transferCheques(
         @RequestHeader("Authorization") String bearerToken,
+        @RequestHeader("x-user-authorization") String clientBearerToken,
         @RequestHeader("callerTerminalName") String callerTerminalName,
-        @RequestBody TransferChequeRequestDto transferChequeRequest
+        @RequestParam("authorizationCode") String otpCode,
+        @RequestBody TransferDto transferChequeRequest
     );
 
     /**
-     * service for report of sayad
-     *
-     * @param bearerToken        token of service desk
-     * @param sayadReportRequest sayad request
-     * @return result of sayad report
+     * service of challenge code
+     * @param bearerToken token of service desk
+     * @param callerTerminalName userCode
+     * @param challengeCodeDto request for challenge code
+     * @return challenge code
      */
-    @RequestMapping(method = RequestMethod.POST, value = "${feign.client.sayad-report-path}")
-    SayadReportResponseDto sayadReport(
+    @RequestMapping(method = RequestMethod.POST, value = "${feign.client.challenge-code-path}")
+    ChakadResponseDto<ChallengeCodeResponseDto> challengeCode(
+            @RequestHeader("Authorization") String bearerToken,
+            @RequestHeader("callerTerminalName") String callerTerminalName,
+            @RequestBody ChallengeCodeDto challengeCodeDto
+    );
+
+    /**
+     * service of deposit Register
+     * @param bearerToken token of service desk
+     * @param depositRegisterDto request for deposit register
+     * @return status of registering deposit
+     */
+    @RequestMapping(method = RequestMethod.POST, value = "${feign.client.deposit-register-path}")
+    ChakadErrorResponseDto depositRegister(
         @RequestHeader("Authorization") String bearerToken,
-        @RequestBody SayadReportRequestDto sayadReportRequest
+        @RequestBody DepositRegisterDto depositRegisterDto
     );
 
     /**
-     * request for cheque
-     *
-     * @param bearerToken  token of service desk
-     * @param sayadRequest request for cheques
-     * @return 100 if everything is success , other if something is not right
+     * service of deposit inquiry
+     * @param bearerToken token of service desk
+     * @param depositInquiryDto request for deposit Inquiry
+     * @return Data list of user deposits
      */
-    @RequestMapping(method = RequestMethod.POST, value = "${feign.client.sayad-request-path}")
-    SayadRequestResponseDto sayadRequest(
+    @RequestMapping(method = RequestMethod.POST, value = "${feign.client.deposit-inquiry-path}")
+    DepositInquiryResponseDto depositInquiry(
         @RequestHeader("Authorization") String bearerToken,
-        @RequestBody SayadRequestDto sayadRequest
-    );
-
-
-    /**
-     * service of batch inquiry
-     *
-     * @param authorization             token
-     * @param creator                   درخواست كننده
-     * @param Username                  نام كاربري درخواست كننده
-     * @param chequeInquiryBatchRequest request
-     * @return response for batch inquiry
-     */
-    @RequestMapping(method = RequestMethod.POST, value = "${feign.client.batch-inquiry-path}")
-    ChequeInquiryBatchResponseDto batchInquiry(
-        @RequestHeader("Authorization") String authorization,
-        @RequestHeader("creator") Integer creator,
-        @RequestHeader("Username") String Username,
-        @RequestBody ChequeInquiryBatchRequestDto chequeInquiryBatchRequest
+        @RequestBody DepositInquiryDto depositInquiryDto
     );
 
     /**
-     * service for sheet inquiry
-     *
-     * @param bearerToken               token
-     * @param creator                   createor
-     * @param Username                  userName of creator
-     * @param chequeInquirySheetRequest request
-     * @return response of sheet inquiry
+     * service of deposit inquiry
+     * @param bearerToken token of service desk
+     * @param depositCancelDto request for deposit cancel
+     * @return status of canceling deposit
      */
-    @RequestMapping(method = RequestMethod.POST, value = "${feign.client.sheet-inquiry-path}")
-    ChequeInquirySheetResponseDto sheetInquiry(
+    @RequestMapping(method = RequestMethod.POST, value = "${feign.client.deposit-cancel-path}")
+    ChakadErrorResponseDto depositCancel(
         @RequestHeader("Authorization") String bearerToken,
-        @RequestHeader("creator") Integer creator,
-        @RequestHeader("username") String Username,
-        @RequestBody ChequeInquirySheetRequestDto chequeInquirySheetRequest
+        @RequestBody DepositCancelDto depositCancelDto
     );
-
-
 }

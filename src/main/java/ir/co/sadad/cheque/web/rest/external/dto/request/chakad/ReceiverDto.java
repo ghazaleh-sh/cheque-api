@@ -1,5 +1,6 @@
 package ir.co.sadad.cheque.web.rest.external.dto.request.chakad;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 /**
@@ -9,6 +10,7 @@ import lombok.Data;
  * </pre>
  */
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ReceiverDto {
 
 

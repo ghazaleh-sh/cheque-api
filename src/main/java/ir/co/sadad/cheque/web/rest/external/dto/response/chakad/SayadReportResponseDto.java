@@ -26,5 +26,5 @@ public class SayadReportResponseDto {
     /**
      * طالعات درخواست های دسته چک
      */
-    private List<RequestItemDto> requestItem;
+    private List<RequestItemDto> data;
 }

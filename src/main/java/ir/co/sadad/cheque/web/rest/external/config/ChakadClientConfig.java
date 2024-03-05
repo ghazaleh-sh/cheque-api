@@ -1,5 +1,8 @@
 package ir.co.sadad.cheque.web.rest.external.config;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.Client;
 import feign.codec.Decoder;
 import feign.codec.ErrorDecoder;
@@ -21,11 +24,16 @@ public class ChakadClientConfig {
 
     @Bean("ChakadClientDecoder")
     public Decoder getDecoder() {
-        HttpMessageConverter jacksonConverter = new MappingJackson2HttpMessageConverter();
+        HttpMessageConverter jacksonConverter = new MappingJackson2HttpMessageConverter(customObjectMapper());
         ObjectFactory<HttpMessageConverters> objectFactory = () -> new HttpMessageConverters(jacksonConverter);
         return new ResponseEntityDecoder(new SpringDecoder(objectFactory));
     }
 
+    public ObjectMapper customObjectMapper() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+        return objectMapper;
+    }
 
     @Bean
     public Client feignClient() {

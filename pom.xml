@@ -7,10 +7,10 @@
 
     <groupId>ir.co.sadad.cheque</groupId>
     <artifactId>cheque</artifactId>
-    <version>1.0.6-SNAPSHOT</version>
+    <version>1.1.4-RELEASE</version>
     <packaging>jar</packaging>
     <name>Cheque</name>
-    <description>Description for Chequeh</description>
+    <description>baam cheque-api</description>
 
     <repositories>
         <!-- jhipster-needle-maven-repository -->
@@ -65,7 +65,9 @@
         <modernizer-maven-plugin.version>2.3.0</modernizer-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
         <jib-maven-plugin.version>3.1.4</jib-maven-plugin.version>
-        <jib-maven-plugin.image>docker://repo.sadad.co.ir/repository/baam-docker-registry/bmi/eclipse-temurin:11-jre-focal</jib-maven-plugin.image>
+        <jib-maven-plugin.image>
+            docker://repo.sadad.co.ir/repository/baam-docker-registry/eclipse-temurin:11-jre-focal-02-01-16
+        </jib-maven-plugin.image>
         <jib-maven-plugin.architecture>amd64</jib-maven-plugin.architecture>
         <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
         <properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
@@ -73,6 +75,7 @@
         <!-- jhipster-needle-maven-property -->
         <gson.version>2.8.5</gson.version>
         <logback-encoder.version>4.11</logback-encoder.version>
+        <hazelcast.version>3.11.4</hazelcast.version>
     </properties>
 
     <dependencyManagement>
@@ -112,6 +115,7 @@
         <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast</artifactId>
+            <version>${hazelcast.version}</version>
         </dependency>
         <dependency>
             <groupId>com.hazelcast</groupId>
@@ -152,6 +156,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <artifactId>audit-logging-spring-boot-starter</artifactId>
+            <groupId>ir.bmi.audit</groupId>
+            <version>2.2.6.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -277,7 +286,6 @@
             <groupId>com.ibm.db2</groupId>
             <version>11.5.0.0</version>
         </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -302,7 +310,7 @@
         <dependency>
             <groupId>ir.bmi.identity</groupId>
             <artifactId>client-security-filter</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
+            <version>1.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>ir.co.sadad.commons</groupId>
@@ -318,6 +326,10 @@
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
             <version>1.9.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-sleuth</artifactId>
         </dependency>
     </dependencies>
 
@@ -784,6 +796,7 @@
                     <configuration>
                         <mainClass>${start-class}</mainClass>
                         <fork>true</fork>
+                        <includeSystemScope>true</includeSystemScope>
                         <!--
                         Enable the line below to have remote debugging of your application on port 5005
                         <jvmArguments>-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005</jvmArguments>

@@ -1,6 +1,5 @@
 package ir.co.sadad.cheque.service;
 
-import ir.co.sadad.cheque.domain.dto.ShahabCodeRequestDto;
 import ir.co.sadad.cheque.domain.dto.ShahabRequestDto;
 import ir.co.sadad.cheque.domain.dto.ShahabSuccessResponseDto;
 import ir.co.sadad.cheque.management.SsoClientTokenManager;
@@ -55,11 +54,10 @@ public class ShahabServiceImp extends ShahabService {
     }
 
     @Override
-    public ShahabSuccessResponseDto codeRequest(ShahabCodeRequestDto shahabCodeRequestDto) {
+    public ShahabSuccessResponseDto codeRequest(String ssn) {
         ShahabDataResponseDto shahabResponse = shahabClient.shahabCode(
-            getToken(), shahabMapper.mapToCodeRequest(shahabCodeRequestDto))
-            .getResponse();
-        return shahabMapper.mapToResponse(shahabResponse);
+            getToken(), ssn).getResponse();
+        return shahabMapper.mapToResponseShahabCode(shahabResponse);
 
     }
 }

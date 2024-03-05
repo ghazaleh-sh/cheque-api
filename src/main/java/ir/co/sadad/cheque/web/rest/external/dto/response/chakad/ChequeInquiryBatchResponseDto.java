@@ -1,99 +1,36 @@
 package ir.co.sadad.cheque.web.rest.external.dto.response.chakad;
 
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
-import java.util.Date;
+import java.util.List;
 
 /**
  * response of batch inquiry
  */
+
 @Data
 public class ChequeInquiryBatchResponseDto {
 
-    private Integer messageCode;
+    @Accessors(fluent = true)
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private boolean isSuccess;
 
-    /**
-     * شماره حساب
-     */
-    private String account;
+    private Integer totalResultCount;
 
-    /**
-     * نوع حساب
-     * ٠ .انفرادي
-     * ١ .مشترك
-     * ٢ .حقوقي
-     */
-    private Integer accountType;
+    private List<String> errorCodes;
 
-    /**
-     * كد درخواست دسته چك
-     */
-    private Integer sayadRequestId;
+    private List<ChequeInquiryBatchDataResponseDto> Result;
 
-    /**
-     * نوع چك
-     * عادی BANS .١
-     * الكترونيكيCHD .٢
-     * موردي CHS .٣
-     * تضميني CHT .٤
-     */
-    private Integer mediaType;
+    public void isSuccess(boolean value) {
+        this.isSuccess = value;
+    }
 
-    /**
-     * سري سريال چك از - تا
-     */
-    private String chequeNumberFromTo;
-
-    /**
-     * وضعيت دسته چك
-     * ١-جاري ٢ -بايگاني
-     */
-    private Integer batchStatus;
-
-    /**
-     * درخواست كننده
-     */
-    private Integer creator;
-
-    /**
-     * نوع دسته چك
-     * برگي ٢٥ .١
-     * برگي ٥٠ .٢
-     * برگي ١٠٠ .٣
-     * برگي٤*٥٠ .٤
-     * برگي ١٠٠*٢ .٥
-     * برگي ١ .٦
-     * برگي ٢ .٧
-     */
-    private Integer sheetCount;
-
-    /**
-     * وضعيت دسته چك
-     * 0 : كليه وضعيت ها
-     * 4 :صدور سريال
-     * 11: ابطال دسته چك
-     * 12:اعلام به سيبا
-     * there is one more row that has not any code
-     */
-    private Integer Status;
-
-    /**
-     * كد شعبه درخواست كننده
-     */
-    private Integer creatorBranch;
-
-    /**
-     * تاريخ صدور دسته چك
-     */
-    private Date IssuanceDate;
-
-    /**
-     * تاريخ فعال سازي در صياد
-     */
-    private Date activeDate;
-
-    /**
-     * تاريخ بايگاني (نهايي)
-     */
-    private Date archiveDate;
+    public boolean getIsSuccess() {
+        return isSuccess;
+    }
 }

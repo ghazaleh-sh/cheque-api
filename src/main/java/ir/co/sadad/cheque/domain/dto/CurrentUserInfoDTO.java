@@ -1,6 +1,6 @@
 package ir.co.sadad.cheque.domain.dto;
 
-import ir.bmi.identity.clientsecfilter.model.BmiOAuth2User;
+import ir.bmi.identity.client.security.model.BmiOAuth2User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

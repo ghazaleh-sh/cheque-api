@@ -1,5 +1,6 @@
 package ir.co.sadad.cheque.web.rest.external.dto.request.chakad;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -9,6 +10,7 @@ import lombok.Data;
  * </pre>
  */
 @Data
+@Builder
 public class SayadReportRequestDto {
 
     /**
@@ -20,10 +22,10 @@ public class SayadReportRequestDto {
 
     /**
      * زمانی ب
-     * 1 )یک ماهه
-     * 2 )سه ماهه
-     * 3 )شش ماهه
-     * 4 )یک ساله
+     * 1)یک‌ماهه
+     * 2)سه‌ماهه
+     * 3)شش‌ماهه
+     * 4)یک ساله
      * require - 1 char
      */
     private Integer length;

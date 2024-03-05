@@ -38,16 +38,16 @@ public class ChakadSignerDto {
     @NotNull(message = "chakad.error.signer.id.code.is.mandatory")
     private String identifier;
 
-    /**
-     * امضا به منزله مهرحقوقي مي باشد؟
-     * ١ :مي باشد
-     * ٠ :نمي باشد
-     * هر حساب حقوقي حتما بايستي داراي يك كد ١
-     * باشد
-     * require
-     */
-    @NotNull(message = "chakad.error.legal.stamp.is.mandatory")
-    private String legalStamp;
+//    /**
+//     * امضا به منزله مهرحقوقي مي باشد؟
+//     * ١ :مي باشد
+//     * ٠ :نمي باشد
+//     * هر حساب حقوقي حتما بايستي داراي يك كد ١
+//     * باشد
+//     * require
+//     */
+//    @NotNull(message = "chakad.error.legal.stamp.is.mandatory")
+//    private String legalStamp;
 
     /**
      * وكيل/ نماينده

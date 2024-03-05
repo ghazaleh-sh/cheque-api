@@ -15,12 +15,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.core.env.Environment;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import tech.jhipster.config.DefaultProfileUtil;
 import tech.jhipster.config.JHipsterConstants;
 
-@EnableJpaAuditing
-@SpringBootApplication
+@SpringBootApplication//(scanBasePackages = "ir.bmi.audit", scanBasePackageClasses = {ChequeApp.class})
 @EnableConfigurationProperties({ ApplicationProperties.class })
 public class ChequeApp {
 

@@ -1,17 +1,20 @@
 package ir.co.sadad.cheque.service.mapper;
 
 import ir.co.sadad.cheque.domain.dto.*;
-import ir.co.sadad.cheque.web.rest.external.dto.request.chakad.ChequeInquiryBatchRequestDto;
-import ir.co.sadad.cheque.web.rest.external.dto.request.chakad.ChequeInquirySheetRequestDto;
-import ir.co.sadad.cheque.web.rest.external.dto.request.chakad.SayadReportRequestDto;
-import ir.co.sadad.cheque.web.rest.external.dto.request.chakad.SayadRequestDto;
-import ir.co.sadad.cheque.web.rest.external.dto.response.chakad.ChequeInquiryBatchResponseDto;
-import ir.co.sadad.cheque.web.rest.external.dto.response.chakad.ChequeInquirySheetResponseDto;
-import ir.co.sadad.cheque.web.rest.external.dto.response.chakad.SayadReportResponseDto;
+import ir.co.sadad.cheque.domain.dto.v2.DepositRegisterRequestDto;
+import ir.co.sadad.cheque.domain.dto.v2.PichakLeafInquiryResponseDto;
+import ir.co.sadad.cheque.web.rest.external.dto.request.chakad.*;
+import ir.co.sadad.cheque.web.rest.external.dto.response.chakad.ChequeInquiryBatchDataResponseDto;
+import ir.co.sadad.cheque.web.rest.external.dto.response.chakad.ChequeInquirySheetDataResponseDto;
+import ir.co.sadad.cheque.web.rest.external.dto.response.chakad.RequestItemDto;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
+import java.util.List;
+
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring",nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
 public interface SayadMapper {
 
     /**
@@ -31,7 +34,7 @@ public interface SayadMapper {
      * @param sayadReportResponse response of sayad service
      * @return response of our controller
      */
-    SayadChequeReportResponseDto toResponseOfReport(SayadReportResponseDto sayadReportResponse);
+    List<SayadChequeRequestItemDto> toResponseOfReport(List<RequestItemDto> sayadReportResponse);
 
 
     /**
@@ -43,20 +46,10 @@ public interface SayadMapper {
     SayadRequestDto toRequestChequeRequestDto(SayadChequeRequestDto sayadChequeRequest);
 
 
-    /**
-     * map request of our service to request od batch service
-     *
-     * @param chequeInquiryBatchRequest request of our servcie
-     * @return request of sayad service
-     */
     ChequeInquiryBatchRequestDto toRequestDtoOfBatchService(SayadChequeInquiryBatchRequestDto chequeInquiryBatchRequest);
 
-    /**
-     * map request of our service to request of sheet service
-     *
-     * @param chequeInquirySheetRequest our request
-     * @return request of sayad service
-     */
+
+    @Mapping(source = "sayadChequeId", target = "sayadId")
     ChequeInquirySheetRequestDto toRequestDtoOfSheetService(SayadChequeInquirySheetRequestDto chequeInquirySheetRequest);
 
     /**
@@ -65,7 +58,22 @@ public interface SayadMapper {
      * @param chequeInquiryBatchResponse response of sayad servie
      * @return our service
      */
-    SayadChequeInquiryBatchResponseDto toResponseDtoOfBatchService(ChequeInquiryBatchResponseDto chequeInquiryBatchResponse);
+    List<SayadChequeInquiryBatchResponseDto> toResponseDtoOfBatchService(List<ChequeInquiryBatchDataResponseDto> chequeInquiryBatchResponse);
+
+    /**
+     * mapper for single item of Batch inquiry
+     * <pre>
+     *     use for map  in list mode
+     * </pre>
+     *
+     * @param chequeInquiryBatchDataResponse input
+     * @return response
+     */
+
+    @Mapping(source = "accountType", target = "accountType", ignore = true)
+    @Mapping(source = "chequeType", target = "chequeType", ignore = true)
+    @Mapping(source = "chequeNumbers", target = "chequeNumbers", ignore = true)
+    SayadChequeInquiryBatchResponseDto toSingleBatchResponse(ChequeInquiryBatchDataResponseDto chequeInquiryBatchDataResponse);
 
     /**
      * map response of sayad service to our service
@@ -73,7 +81,15 @@ public interface SayadMapper {
      * @param chequeInquirySheetResponse response of sheet service of sayad
      * @return our service
      */
-    SayadChequeInquirySheetResponseDto toResponseDtoOfSheetService(ChequeInquirySheetResponseDto chequeInquirySheetResponse);
+    List<SayadChequeInquirySheetResponseDto> toResponseDtoOfSheetService(List<ChequeInquirySheetDataResponseDto> chequeInquirySheetResponse);
 
+//    @Mapping(source = "sayadId", target = "sayadChequeId")
+    SayadChequeInquirySheetResponseDto toSingleSheetResponse(ChequeInquirySheetDataResponseDto chequeInquirySheetDataResponse);
+
+    @Mapping(source = "clearType", target = "clearCode")
+    @Mapping(source = "chequeType", target = "chequeType", ignore = true)
+    @Mapping(source = "businessType", target = "businessType", ignore = true)
+    @Mapping(source = "clearType", target = "clearType", ignore = true)
+    PichakLeafInquiryResponseDto toSingleLeafResponse(ChequeInquirySheetDataResponseDto chequeInquirySheetDataResponse);
 
 }

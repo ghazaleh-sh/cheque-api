@@ -8,7 +8,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "CHEQUE_REASON")
+@Table(name = "CHEQUE_REASON", schema = "BMI_ACCOUNT")
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 @Getter
 @Setter
@@ -27,5 +27,8 @@ public class ChequeReason {
 
     @Column(name = "REASON_TITLE")
     private String reasonTitle;
+
+    @Column(name = "REASON_PRIORITY")
+    private Integer priority;
 
 }

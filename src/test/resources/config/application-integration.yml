@@ -33,8 +33,8 @@ spring:
 
   datasource:
     username: db2inst1
-    password: 123456
-    url: jdbc:db2://192.168.97.134:50000/BMI_API
+    password: P@ssw0rd
+    url: jdbc:db2://192.168.53.73:50000/BAAMPAY
     driver-class-name: com.ibm.db2.jcc.DB2Driver
     hikari:
       schema: BMI_ACCOUNT
@@ -50,27 +50,52 @@ spring:
 feign:
   client:
     sadad-rest-url: http://172.30.43.12:9095
-    cheque-url: http://172.30.40.9
+    cheque-url: https://172.30.40.61/egw
+    chakad-url: http://localhost:2000  #prod:192.168.162.77:80  #http://172.30.40.9
+    esservice-url: https://cheque.bmi.ir   #prod:192.168.163.136:80
+    pichak-url: https://192.168.44.18:1227 # 192.168.161.227:80  #=prod
     bam-api: http://localhost:9081/services/rest/api
     sso-url: http://185.135.30.10:9443
-    shahab-url: http://
+    baambase-url: http://localhost:2000 #http://192.168.53.23:9025 #prod:172.29.152.125:9080
+    billService-url: http://192.168.53.23:9148
+    #dev>> http://172.29.234.205
     allocating-path: /esservicetest/api/WebMQ/558
     sayadRequest-path: /eservice/api/WebMQ/SayadRequest
     report-path: /esservicetest/api/WebMQ/2645
-    inquiry-status-path: /esServiceTest/api/v1/chakad/inquiryStatus
-    deactivation-path: /esServiceTest/api/v1/chakad/deactivation
-    activation-path: /esServiceTest/api/v1/chakad/activation
-    cartable-path: /esServiceTest/api/v1/chakad/cartable
-    issue-cheque-path: /esServiceTest/api/v1/chakad/issue
-    transfer-cheque-path: /esServiceTest/api/v1/chakad/transfer
-    sayad-report-path: /esservicetest/api/WebMQ/SayadReport
-    sayad-request-path: /esservicetest/api/WebMQ/SayadRequest
-    batch-inquiry-path: /esservicetest/api/WebMQ/
-    sheet-inquiry-path: /esservicetest/api/WebMQ/
+    shahab-url: http://localhost:2000
+    #    http://192.168.34.176:32321
+    inquiry-status-path: /egw/chakad/api/v1/digitalcheque_inquirystatus
+    deactivation-path: /egw/chakad/api/v1/digitalcheque_deactivation
+    activation-path: /egw/chakad/api/v1/digitalcheque_activation
+    cartable-path: /egw/chakad/api/v1/digitalcheque_cartable
+    issue-cheque-path: /egw/chakad/api/v1/digitalcheque_issue
+    transfer-cheque-path: /egw/chakad/api/v1/digitalcheque_transfer
+    sayad-report-path: /esservice/api/WebMQ/sayadreport
+    sayad-request-path: /esservice/api/WebMQ/sayadrequest
+    batch-inquiry-path: /egw/SayadCheque/api/v1/ChequeBook/ChequeBookInquiry
+    sheet-inquiry-path: /egw/CoreCheque/api/v1/ChequeLeaf/ChequeLeafInquiry
     inquiry-path: /api/icms/v1/iranian/individual/shahab/inquiry
     track-path: /api/icms/v1/iranian/individual/shahab/track
+    code-path: /api/icms/v1/customer-info/real/iranian/
+    challenge-code-path: /egw/chakad/api/v1/digitalcheque_challengeCode
+    cheque-acceptance: /pichakservice/api/v2/pichak/Accept
+    user-certifications-path: /baambase/digital-signature/certifications/users
+    create-signature-path: /baambase/digital-signature/signatures/create
+    signed-data-path: /baambase/digital-signature/signatures/signedData
+    deposit-register-path: /egw/chakad/api/v1/cheque_depositregister
+    deposit-cancel-path: /egw/chakad/api/v1/cheque_depositcancel
+    deposit-inquiry-path: /egw/chakam/api/v1/cheque_depositinquiry
+    account-customer-path: /billServices/Customers/GetCustomerInfoByAccNo
   #      appName: key
   #      appPassword: secret
+
+chakad:
+  amount-for-reason: 100000000
+  namad-product-uid: 700
+  legalStamp: 0
+  requestType: 1
+  sign-request: true
+
 
 sso:
   grant-type: client_credentials

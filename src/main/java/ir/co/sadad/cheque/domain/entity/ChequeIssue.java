@@ -1,5 +1,6 @@
 package ir.co.sadad.cheque.domain.entity;
 
+import ir.co.sadad.cheque.domain.enums.IssueStatus;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Cache;
@@ -12,7 +13,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
-@Table(name = "CHEQUE_ISSUE")
+@Table(name = "CHEQUE_ISSUE", schema = "BMI_ACCOUNT")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Getter
 @Setter
@@ -48,6 +49,22 @@ public class ChequeIssue {
     @Column(name = "ISSUE_DATE", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date issueDate;
+
+    @Column(name = "TRANSACTION_ID")
+    private String transactionId;
+
+    @Column(name = "TBS")
+    private String tbs;
+
+    @Column(name = "SIGNED")
+    private Boolean signed;
+
+    @Column(name = "ISSUE_STATUS")
+    @Enumerated(EnumType.STRING)
+    private IssueStatus issueStatus;
+
+    @Column(name = "SIGNATURE_VALUE")
+    private String signatureValue;
 
     @ManyToOne
     @JoinColumn(name = "REASON_ID", foreignKey = @ForeignKey(name = "FKISSUE_TO_REASON"))

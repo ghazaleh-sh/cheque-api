@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
-@Table(name = "CHEQUE_TRANSFER")
+@Table(name = "CHEQUE_TRANSFER", schema = "BMI_ACCOUNT")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Getter
 @Setter
@@ -27,23 +27,38 @@ public class ChequeTransfer {
     @Column(name = "SAYAD_ID", columnDefinition = "CHAR(16)", length = 16, nullable = false)
     private String sayadId;
 
-    @Column(name = "ACCEPT_TRANSFER")
-    private Boolean acceptTransfer;
+//    @Column(name = "ACCEPT_TRANSFER")
+//    private Boolean acceptTransfer;
 
     @Column(name = "GIVE_BACK")
     private Boolean giveBack;
 
-    @Column(name = "IDENTIFIER", length = 15, nullable = false)
-    private String identifier;
-
-    @Column(name = "IDENTIFIER_TYPE", nullable = false)
-    private String identifierType;
-
-    @Column(name = "ACCOUNT", columnDefinition = "VARCHAR(13)")
-    private String account;
+//    @Column(name = "IDENTIFIER", length = 15, nullable = false)
+//    private String identifier;
+//
+//    @Column(name = "IDENTIFIER_TYPE", nullable = false)
+//    private String identifierType;
+//
+//    @Column(name = "ACCOUNT", columnDefinition = "VARCHAR(13)")
+//    private String account;
 
     @Column(name = "DESCRIPTION", columnDefinition = "VARCHAR(250 CODEUNITS32)", nullable = false)
     private String description;
+
+    @Column(name = "TRANSACTION_ID")
+    private String transactionId;
+
+    @Column(name = "TBS")
+    private String tbs;
+
+    @Column(name = "SIGNING_STATUS")
+    private String signingStatus;
+
+    @Column(name = "CERTIFICATION_KEYID")
+    private String certificationKeyId;
+
+    @Column(name = "SIGNATURE_VALUE")
+    private String signatureValue;
 
     @ManyToOne
     @JoinColumn(name = "REASON_ID", foreignKey = @ForeignKey(name = "FKTRANSFER_TO_REASON"))
@@ -53,5 +68,9 @@ public class ChequeTransfer {
     @Column(name = "TRANSFER_DATE", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date transferDate;
+
+    @ManyToOne
+    @JoinColumn(name = "ISSUE_ID", foreignKey = @ForeignKey(name = "FKTRANSFER_TO_ISSUE"))
+    private ChequeIssue chequeIssue;
 
 }

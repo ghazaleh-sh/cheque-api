@@ -1,5 +1,6 @@
 package ir.co.sadad.cheque.web.rest.external.dto.request.chakad;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.util.Date;
@@ -11,27 +12,27 @@ import java.util.Date;
  * </pre>
  */
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ChequeInquiryBatchRequestDto {
 
     /**
      * شماره حساب
      * require
      */
-    private Integer account;
+    private String accountNumber;
 
     /**
      * نوع حساب
      * ١-انفرادي ٢-اشتراكي ٣-حقوقي ٠-همه موارد
      */
-    private Integer  accountType;
+    private Integer accountType;
 
     /**
-     * ماهيت شناسه
-     * ١-حقيقي ايراني ٢-حقوقي ايراني ٣-حقيقي
-     * غيرايراني ٤-حقوقي غير ايراني
-     * require-if
+     * ماهیت شناسه
+     * -1حقیقی ایرانی -2حقوقی ایرانی -3حقیقی
+     * غیرایرانی -4حقوقی غیر ایرانی
      */
-    private Integer typePersonality;
+    private Integer IdentifierType;
 
     /**
      * شناسه شخص
@@ -47,27 +48,24 @@ public class ChequeInquiryBatchRequestDto {
      * وجود دارد.
      * require-if
      */
-    private String sayadRequestId;
-
-    /**
-     * وضعيت دسته چك
-     * ١-جاري ٢ -بايگاني
-     */
-    private Integer batchStatus;
-
-    /**
-     * درخواست كننده
-     * مطابق جدول كاربري سند (جدول الف)
-     */
-    private Integer  creator;
-
+    private String ChequeIssueId;
     /**
      * تعداد برگ چك
      * -٤ برگي ١٠٠ -٣ برگي ٥٠ -٢ برگي ٢٥-١
-     *  برگي ١٠٠*٢ -٥ برگي ٥٠*٤
-     *  موارد همه-٠ برگي ٢ -٧ برگي ١ -٦
+     * برگي ١٠٠*٢ -٥ برگي ٥٠*٤
+     * موارد همه-٠ برگي ٢ -٧ برگي ١ -٦
      */
     private Integer sheetCount;
+
+    /**
+     * وضعیت درخواست
+     */
+    private Integer State;
+
+    /**
+     * وضعیت دسته چک
+     */
+    private Integer StatusCode;
 
     /**
      * تاريخ صدور از
@@ -80,12 +78,16 @@ public class ChequeInquiryBatchRequestDto {
     private Date IssuanceDateTo;
 
     /**
-     * تاريخ فعال سازي در صياد از
+     * تاریخ تحویل از
      */
-    private Date activeDateFrom;
+    private Date deliveryDateFrom;
 
     /**
-     * تاريخ فعال سازي در صياد تا
+     * تاریخ تحویل تا
      */
-    private Date activeDateTo;
+    private Date deliveryDateTo;
+
+
+//    private Integer typePersonality;
+
 }

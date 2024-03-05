@@ -1,14 +1,15 @@
 package ir.co.sadad.cheque.service.mapper;
 
-import ir.co.sadad.cheque.domain.dto.ChakadActivationRequestDto;
-import ir.co.sadad.cheque.domain.dto.ChakadDeactivationRequestDto;
-import ir.co.sadad.cheque.domain.dto.ChakadInquiryStatusResponseDto;
-import ir.co.sadad.cheque.domain.dto.CustomerDto;
+import ir.co.sadad.cheque.domain.dto.*;
+import ir.co.sadad.cheque.domain.dto.v2.InquiryStatusFinalResDto;
+import ir.co.sadad.cheque.domain.enums.ActivationResponseStatus;
 import ir.co.sadad.cheque.domain.enums.CustomerIdType;
 import ir.co.sadad.cheque.web.rest.external.dto.request.chakad.ActivationRequestDto;
+import ir.co.sadad.cheque.web.rest.external.dto.request.chakad.ChallengeCodeDto;
 import ir.co.sadad.cheque.web.rest.external.dto.request.chakad.CustomerRequestDto;
 import ir.co.sadad.cheque.web.rest.external.dto.request.chakad.DeactivationRequestDto;
-import ir.co.sadad.cheque.web.rest.external.dto.response.chakad.InquiryStatusResponseDto;
+import ir.co.sadad.cheque.web.rest.external.dto.response.chakad.ActivationStatusDto;
+import ir.co.sadad.cheque.web.rest.external.dto.response.chakad.ChallengeCodeResponseDto;
 import org.mapstruct.*;
 
 import java.util.List;
@@ -22,11 +23,14 @@ public interface ChakadMapper {
     @Mapping(source = "legalStamp", target = "customerActivation.legalStamp")
     @Mapping(source = "customerActivation.mobileNumber", target = "customerActivation.mobileNumber")
     @Mapping(source = "customerActivation.simlessIdentifier", target = "customerActivation.simlessIdentifier")
+    @Mapping(source = "customerActivation.challengeCode", target = "customerActivation.challengeCode")
+    @Mapping(source = "customerActivation.requestDateTime", target = "customerActivation.requestDateTime")
+    @Mapping(source = "customerActivation.activationTicketId", target = "customerActivation.activationTicketId")
     @Mapping(source = "idCodeCustomer", target = "customerActivation.customer.idCode")
     @Mapping(source = "idTypeCustomer", target = "customerActivation.customer.idType", qualifiedByName = "idTypeConvert")
     ActivationRequestDto mapToActivationRequest(ChakadActivationRequestDto baseRequestDto);
 
-    @Mapping(constant = "52", target = "tokenType")
+    @Mapping(constant = "1", target = "tokenType")
     @Mapping(source = "idCodeCustomer", target = "customer.idCode")
     @Mapping(source = "idTypeCustomer", target = "customer.idType", qualifiedByName = "idTypeConvert")
     DeactivationRequestDto mapToDeactivationRequest(ChakadDeactivationRequestDto deactiveRequestDto);
@@ -34,6 +38,12 @@ public interface ChakadMapper {
     @Named("idTypeConvert")
     default Integer idTypeConverter(String idTypeCustomer) {
         return CustomerIdType.valueOf(idTypeCustomer).getValue();
+    }
+
+
+    @Named("statusConvert")
+    default ActivationResponseStatus activeStatusConverter(Integer status) {
+        return ActivationResponseStatus.fromInteger(status);
     }
 
     @IterableMapping(qualifiedByName = "ListMapper")
@@ -55,5 +65,25 @@ public interface ChakadMapper {
         return finalReq;
     }
 
-    ChakadInquiryStatusResponseDto toInquiryResponse(InquiryStatusResponseDto response);
+    List<InquiryActivationStatusDto> toInquiryResponse(List<ActivationStatusDto> response);
+
+    @Mapping(source = "idCodeCustomer", target = "customer.idCode")
+    @Mapping(source = "idTypeCustomer", target = "customer.idType", qualifiedByName = "idTypeConvert")
+    @Mapping(source = "idCodeOrganization", target = "organization.idCode",nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(source = "idCodeOrganization", target = "organization.idType",nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(constant = "1", target = "tokenType")
+    ChallengeCodeDto toChallengeRequestDto(ChakadChallengeCodeReqDto req);
+
+
+    ChakadChallengeCodeResDto toChallengeResponse(ChallengeCodeResponseDto res);
+
+    @Mapping(source = "idCode", target = "userId")
+    @Mapping(source = "status", target = "status", qualifiedByName = "statusConvert")
+    InquiryStatusFinalResDto toInquiryV2Response(ActivationStatusDto response);
+
+    @Mapping(source = "idCode", target = "customer.idCode")
+    @Mapping(source = "idType", target = "customer.idType")
+    @Mapping(constant = "1", target = "tokenType")
+    @Mapping(constant = "0", target = "legalStamp")
+    DeactivationRequestDto toDeactivationRequest(CustomerRequestDto customerRequestDto);
 }

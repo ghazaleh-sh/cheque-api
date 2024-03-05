@@ -3,6 +3,7 @@ package ir.co.sadad.cheque.domain.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -19,7 +20,7 @@ public class SayadChequeReportRequestDto {
 
 
     @Schema(title = "بازه زمانی - 1 یک ماهه - 2 سه ماهه - 3 شش ماهه - 4 یک ساله")
-    @Size(min = 1,max = 1,message = "chakad.error.sayad.length.length.invalid")
+    @Range(min = 1,max = 4,message = "chakad.error.sayad.length.length.invalid")
     @NotNull(message = "chakad.error.sayad.length.is.mandatory")
     private Integer length;
 }

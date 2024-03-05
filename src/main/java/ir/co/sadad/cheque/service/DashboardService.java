@@ -1,9 +1,8 @@
 package ir.co.sadad.cheque.service;
 
 import ir.co.sadad.cheque.domain.dto.*;
+import ir.co.sadad.cheque.domain.enums.ReasonType;
 import ir.co.sadad.cheque.management.SsoClientTokenManager;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -33,7 +32,7 @@ public abstract class DashboardService extends BaseService {
      * @param cartableRequest request
      * @return cartable dto
      */
-    public abstract ChakadCartableResponseDto cartable(String authToken,
+    public abstract List<ChakadCartableResponseDto> cartable(String authToken,
                                                        ChakadCartableRequestDto cartableRequest);
 
     /**
@@ -50,14 +49,14 @@ public abstract class DashboardService extends BaseService {
     /**
      * @param authToken       token of password credential
      * @param issueRequestDto cheque info and sign data
-     * @return
      */
-    public abstract ResponseEntity<HttpStatus> issue(String authToken, ChakadIssueRequestDto issueRequestDto);
+    public abstract void issue(String authToken, ChakadIssueRequestDto issueRequestDto);
 
     /**
      * @param authToken          token of password credential
      * @param transferRequestDto transfer info and sign data
-     * @return
      */
-    public abstract ResponseEntity<HttpStatus> transfer(String authToken, ChakadTransferRequestDto transferRequestDto);
+    public abstract void transfer(String authToken, ChakadTransferRequestDto transferRequestDto);
+
+    public abstract void acceptance(String authToken, ChakadAcceptRequestDto acceptRequestDto);
 }

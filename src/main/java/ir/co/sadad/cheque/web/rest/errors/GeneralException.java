@@ -16,6 +16,7 @@ import static org.zalando.problem.Status.UNAUTHORIZED;
 @Getter
 public class GeneralException extends AbstractThrowableProblem {
 
+    protected String exceptionTemplate = "server.external.exception.";
     protected Status statusType;
     protected String message;
     protected String code;
@@ -26,13 +27,25 @@ public class GeneralException extends AbstractThrowableProblem {
         this.timestamp = new Date();
     }
 
+
     public GeneralException(Status statusType) {
         this.statusType = statusType;
 
         if (this.statusType.getStatusCode() == UNAUTHORIZED.getStatusCode()) {
             this.message = "server.external.exception.UNAUTHORIZED";
-            this.code="401";
+            this.code = "CHB401";
         }
+        this.timestamp = new Date();
+    }
+
+    public GeneralException(Status statusType, String code) {
+        this.statusType = statusType;
+        this.code = code;
+        if (this.statusType.getStatusCode() == UNAUTHORIZED.getStatusCode()) {
+            this.message = "server.external.exception.UNAUTHORIZED";
+            this.code = "CHB401";
+        }
+        else this.message = exceptionTemplate + code;
         this.timestamp = new Date();
     }
 }

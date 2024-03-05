@@ -1,7 +1,6 @@
 package ir.co.sadad.cheque.web.rest.external;
 
 import ir.co.sadad.cheque.web.rest.external.config.ShahabClientConfig;
-import ir.co.sadad.cheque.web.rest.external.dto.request.shahab.CodeRequestDto;
 import ir.co.sadad.cheque.web.rest.external.dto.request.shahab.ShahabInquiryRequestDto;
 import ir.co.sadad.cheque.web.rest.external.dto.response.shahab.ShahabResponseDto;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -36,13 +35,13 @@ public interface ShahabClient {
      * this client gets customer identifier and returns its shahab code
      *
      * @param bearerToken    client token with its described scopes
-     * @param codeRequestDto includes code and type of customer
+     * @param uniqueuIdentifier includes ssn of customer
      * @return the shahab code - If error is generated, @ShahabClientConfig decodes via ShahabClientError
      */
-    @RequestMapping(method = RequestMethod.POST, value = "${feign.client.code-path}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST, value = "${feign.client.code-path}" + "{uniqueuIdentifier}", consumes = MediaType.APPLICATION_JSON_VALUE)
     ShahabResponseDto shahabCode(
         @RequestHeader("Authorization") String bearerToken,
-        @RequestBody CodeRequestDto codeRequestDto
+        @PathVariable("uniqueuIdentifier") String uniqueuIdentifier
     );
 
 }

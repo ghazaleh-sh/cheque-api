@@ -5,6 +5,7 @@ import ir.co.sadad.cheque.management.SsoClientTokenManager;
 import ir.co.sadad.cheque.web.rest.errors.GeneralException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * service for sayad rquests
@@ -32,7 +33,7 @@ public abstract class SayadService extends BaseService {
      * @return info from cheques services
      * @throws GeneralException response was not 100 , throws exception
      */
-    public abstract SayadChequeReportResponseDto reportIssuedCheque(SayadChequeReportRequestDto chequeReportRequest);
+    public abstract List<SayadChequeRequestItemDto> reportIssuedCheque(SayadChequeReportRequestDto chequeReportRequest);
 
     /**
      * request for cheque
@@ -41,10 +42,9 @@ public abstract class SayadService extends BaseService {
      *  </pre>
      *
      * @param sayadChequeRequest request for cheque
-     * @return if response of service was 100 return true
      * @throws GeneralException response was not 100 , throws exception
      */
-    public abstract SayadChequeRequestResDto requestCheque(SayadChequeRequestDto sayadChequeRequest);
+    public abstract void requestCheque(SayadChequeRequestDto sayadChequeRequest);
 
     /**
      * service for batch inquiry
@@ -56,7 +56,7 @@ public abstract class SayadService extends BaseService {
      * @return inquiry batch from service
      * @throws GeneralException response was not 100 , throws exception
      */
-    public abstract SayadChequeInquiryBatchResponseDto batchInquiry(SayadChequeInquiryBatchRequestDto chequeInquiryBatchRequest);
+    public abstract List<SayadChequeInquiryBatchResponseDto> batchInquiry(SayadChequeInquiryBatchRequestDto chequeInquiryBatchRequest);
 
     /**
      * service for sheet inquiry
@@ -68,5 +68,5 @@ public abstract class SayadService extends BaseService {
      * @return inquiry sheet from service
      * @throws GeneralException response was not 100 , throws exception
      */
-    public abstract SayadChequeInquirySheetResponseDto sheetInquiry(SayadChequeInquirySheetRequestDto chequeInquirySheetRequest);
+    public abstract  List<SayadChequeInquirySheetResponseDto> sheetInquiry(SayadChequeInquirySheetRequestDto chequeInquirySheetRequest);
 }

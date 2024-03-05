@@ -6,7 +6,7 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 @Data
-@AllArgsConstructor
+//@AllArgsConstructor
 public class ShahabRequestDto {
 
     @NotNull(message = "error.national.code.is.mandatory")

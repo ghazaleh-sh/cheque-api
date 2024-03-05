@@ -1,6 +1,6 @@
 package ir.co.sadad.cheque.security.jwt;
 
-import ir.bmi.identity.clientsecfilter.config.BmiSsoTokenProvider;
+import ir.bmi.identity.client.security.config.BmiSsoTokenProvider;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.DefaultSecurityFilterChain;

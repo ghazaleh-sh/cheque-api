@@ -6,6 +6,8 @@ import ir.co.sadad.cheque.web.rest.external.dto.response.AllocatingEstelamRespon
 public interface ChequeService {
     ChequeRequestResponse chequeRequest(ChequeRequestDto chequeRequestDto);
 
+    ChequeRequestResponse chequeRequestV2(ChequeRequestDto chequeRequestDto);
+
     AllocatingEstelamResponseDto chequeAllocatingInquiry(AllocatingInquiryRequestDto allocatingInquiryRequestDto);
 
     BouncedChequeResponseDto bouncedInquiry();

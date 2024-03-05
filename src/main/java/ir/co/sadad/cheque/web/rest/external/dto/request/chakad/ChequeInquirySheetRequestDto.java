@@ -1,5 +1,6 @@
 package ir.co.sadad.cheque.web.rest.external.dto.request.chakad;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.math.BigInteger;
@@ -11,6 +12,7 @@ import java.math.BigInteger;
  * </pre>
  */
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ChequeInquirySheetRequestDto {
 
     /**
@@ -18,14 +20,14 @@ public class ChequeInquirySheetRequestDto {
      * 16رقم
      * require-if
      */
-    private Integer sayadId;
+    private String sayadId;
 
     /**
      * شماره حساب
      * 13 رقم
      * require-if
      */
-    private String account;
+    private String accountNumber;
 
     /**
      * سری و سریال چک
@@ -35,8 +37,13 @@ public class ChequeInquirySheetRequestDto {
     private String chequeNumber;
 
     /**
-     * کد درخواست دسته چک
-     * require-if
+     * cheque number
      */
-    private BigInteger chequeIssueId;
+    private Long chequeIssueId;
+
+    /**
+     * نوع آرشسو
+     */
+    private Integer archiveType;
+
 }

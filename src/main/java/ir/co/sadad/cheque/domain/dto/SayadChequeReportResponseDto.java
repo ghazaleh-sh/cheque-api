@@ -16,5 +16,5 @@ public class SayadChequeReportResponseDto {
      * طالعات درخواست های دسته چک
      */
     @Schema(title = "اطلاعات درخواست")
-    private List<SayadChequeRequestItemDto> requestItem;
+    private List<SayadChequeRequestItemDto> data;
 }

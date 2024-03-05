@@ -3,37 +3,45 @@
 
 <configuration scan="true">
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
-    <springProperty scope="context" name="app_name" source="spring.application.name"/>
     <springProperty name="logStashHost" source="myApp.logStash.host" defaultValue="localhost"/>
-    <!-- The FILE and ASYNC appenders are here as examples for a production configuration -->
-    <!--
-            <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-                <file>${LOG_DIR}/cheque-api-logger.log</file>
-                <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                    <fileNamePattern>${LOG_DIR}.%d{yyyy-MM-dd}.log</fileNamePattern>
-                    <maxHistory>90</maxHistory>
-                </rollingPolicy>
+    <springProperty name="logStashPort" source="myApp.logStash.port" defaultValue="5044"/>
+    <springProperty scope="context" name="app_name" source="spring.application.name"/>
 
-                <encoder>
-                    <charset>utf-8</charset>
-                    <Pattern>%d %-5level [%thread] %logger{0}: %msg%n</Pattern>
-                </encoder>
-            </appender>
-
-            <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
-                <queueSize>512</queueSize>
-                <appender-ref ref="FILE"/>
-            </appender>
-    -->
-    <appender name="logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <param name="Encoding" value="UTF-8"/>
-        <remoteHost>${logStashHost}</remoteHost>
-        <port>5044</port>
+    <appender name="JSON" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
     </appender>
 
-    <root level="${logging.level.root}">
-        <appender-ref ref="logstash"/>
+    <!-- The FILE and ASYNC appenders are here as examples for a production configuration -->
+    <!--
+        <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
+                <maxHistory>90</maxHistory>
+            </rollingPolicy>
+            <encoder>
+                <charset>utf-8</charset>
+                <Pattern>%d %-5level [%thread] %logger{0}: %msg%n</Pattern>
+            </encoder>
+        </appender>
+
+        <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+            <queueSize>512</queueSize>
+            <appender-ref ref="FILE"/>
+        </appender>
+
+        <root level="${logging.level.root}">
+            <appender-ref ref="ASYNC"/>
+        </root>
+    -->
+
+    <!--    <appender name="logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">-->
+    <!--        <param name="Encoding" value="UTF-8"/>-->
+    <!--        <remoteHost>${logStashHost}</remoteHost>-->
+    <!--        <port>${logStashPort}</port>-->
+    <!--        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>-->
+    <!--    </appender>-->
+    <root level="INFO">
+        <appender-ref ref="JSON"/>
     </root>
 
     <logger name="javax.activation" level="WARN"/>

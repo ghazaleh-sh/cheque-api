@@ -29,6 +29,12 @@ public class ChequeController {
         return chequeService.chequeRequest(chequeRequestDto);
     }
 
+    @PostMapping("/request")
+    @PreAuthorize("hasAuthority('SCOPE_account-super')")
+    public ChequeRequestResponse chequeRequestV2(@Valid @RequestBody ChequeRequestDto chequeRequestDto) {
+        return chequeService.chequeRequestV2(chequeRequestDto);
+    }
+
     @GetMapping("/bounced-inquiry")
     @PreAuthorize("hasAuthority('SCOPE_account-super')")
     public BouncedChequeResponseDto bouncedInquiry() {

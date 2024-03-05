@@ -1,6 +1,6 @@
 package ir.co.sadad.cheque.security.jwt;
 
-import ir.bmi.identity.clientsecfilter.config.BmiSsoTokenProvider;
+import ir.bmi.identity.client.security.config.BmiSsoTokenProvider;
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

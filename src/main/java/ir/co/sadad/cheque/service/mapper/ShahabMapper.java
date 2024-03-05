@@ -16,7 +16,18 @@ public interface ShahabMapper {
     @Mapping(constant = "false", target = "online")
     ShahabInquiryRequestDto mapToInquiryRequest(ShahabRequestDto shahabRequestDto);
 
+    @Mapping(target = "shahabCode", source = "shahabDataResponseDto.customerInfo.shahabCode")
     ShahabSuccessResponseDto mapToResponse(ShahabDataResponseDto shahabDataResponseDto);
+
+    /**
+     * mapper of request shahab code from cheque group services
+     * @param shahabDataResponseDto response form cheque group
+     * @return
+     */
+    @Mapping(target = "shahabCode", source = "shahabDataResponseDto.customerInfo.shahabCode")
+    ShahabSuccessResponseDto mapToResponseShahabCode(ShahabDataResponseDto shahabDataResponseDto);
+
+
 
     CodeRequestDto mapToCodeRequest(ShahabCodeRequestDto shahabCodeRequestDto);
 

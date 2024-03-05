@@ -1,6 +1,6 @@
 package ir.co.sadad.cheque.domain.dto;
 
-import ir.bmi.identity.clientsecfilter.model.BmiSsoAuthentication;
+import ir.bmi.identity.client.security.model.BmiSsoAuthentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 public interface AccessTokenProcessor {

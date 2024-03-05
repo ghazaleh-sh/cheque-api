@@ -10,7 +10,7 @@ public class ChakadActivationRequestDto extends ChakadDeactivationRequestDto {
     /**
      * data for customer activation
      */
-    private activationDto customerActivation;
+    private ActivationDto customerActivation;
 
     /**
      * data for sign object

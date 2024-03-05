@@ -25,6 +25,6 @@ public class AccountOwnerDto {
      * -برای اشخاص حقیقی و حقوقی غیر ایرانی، کد فراگیر 8 تا
      * 13رقم پر می شود
      */
-    private Integer identifier;
+    private String identifier;
 
 }

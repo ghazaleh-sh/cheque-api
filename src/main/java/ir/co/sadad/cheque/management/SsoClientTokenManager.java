@@ -31,8 +31,9 @@ public class SsoClientTokenManager {
         if (this.token == null || new Date().after(this.startDate)) {
             synchronized (SsoClientTokenManager.class) {
                 if (this.token == null || new Date().after(this.startDate)) {
-                    this.token = getSsoAuth().getAccessToken();
-                    this.expiration = getSsoAuth().getExpiresIn();
+                    SsoTokenDto token = getSsoAuth();
+                    this.token = token.getAccessToken();
+                    this.expiration = token.getExpiresIn();
                     this.startDate = calculateExpireDate();
                 }
             }

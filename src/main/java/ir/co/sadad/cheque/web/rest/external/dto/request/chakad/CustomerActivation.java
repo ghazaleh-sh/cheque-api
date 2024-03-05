@@ -21,4 +21,11 @@ public class CustomerActivation {
 
     private String simlessIdentifier;
 
+    private Integer challengeCode;
+
+    private String requestDateTime;
+
+    private String activationTicketId;
+
+
 }

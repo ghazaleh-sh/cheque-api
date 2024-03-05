@@ -1,6 +1,5 @@
 package ir.co.sadad.cheque.service;
 
-import ir.co.sadad.cheque.domain.dto.ShahabCodeRequestDto;
 import ir.co.sadad.cheque.domain.dto.ShahabRequestDto;
 import ir.co.sadad.cheque.domain.dto.ShahabSuccessResponseDto;
 import ir.co.sadad.cheque.management.SsoClientTokenManager;
@@ -17,5 +16,5 @@ public abstract class ShahabService extends BaseService {
 
     public abstract ShahabSuccessResponseDto trackRequest(String ssn, String trackCode);
 
-    public abstract ShahabSuccessResponseDto codeRequest(ShahabCodeRequestDto shahabCodeRequestDto);
+    public abstract ShahabSuccessResponseDto codeRequest(String ssn);
 }
