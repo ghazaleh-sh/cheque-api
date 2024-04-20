@@ -21,57 +21,9 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/sayad")
 @RequiredArgsConstructor
 @Log4j2
 @Tag(description = "سرویس های مربوط به صیاد", name = "Sayad Resources")
 public class SayadController {
-
-    private final SayadService sayadService;
-
-    @Operation(summary = "سرویس استعلام رهگیری دسته چک", description = "سرویس مربوط به استعلام درخواست دسته چک")
-    @ApiResponse(responseCode = "200",
-        content = @Content(schema = @Schema(implementation = SayadChequeRequestItemDto.class)))
-    @PostMapping("/report")
-    @PreAuthorize("hasAuthority('SCOPE_account-super')")
-    public ResponseEntity<List<SayadChequeRequestItemDto>> sayadReport(
-        @Valid @RequestBody SayadChequeReportRequestDto sayadChequeReportRequest) {
-        return new ResponseEntity<>(sayadService.reportIssuedCheque(sayadChequeReportRequest), HttpStatus.OK);
-    }
-
-
-    @Operation(summary = "سرویس درخواست دسته چک", description = "سرویس مربوط به درخواست دسته چک")
-    @ApiResponse(responseCode = "204",
-        content = @Content(schema = @Schema(implementation = SayadChequeRequestResDto.class)))
-    @PostMapping("/request")
-    @PreAuthorize("hasAuthority('SCOPE_account-super')")
-    public ResponseEntity<HttpStatus> sayadRequest(
-        @Valid @RequestBody SayadChequeRequestDto sayadChequeRequest) {
-        sayadService.requestCheque(sayadChequeRequest);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-
-    @Operation(summary = "سرویس درخواست استعلام دسته چک", description = "سرویس مربوط استعلام دسته چک")
-    @ApiResponse(responseCode = "200",
-        content = @Content(schema = @Schema(implementation = SayadChequeInquiryBatchResponseDto.class)))
-    @PostMapping("/batch-inquiry")
-    @PreAuthorize("hasAuthority('SCOPE_account-super')")
-    public ResponseEntity<List<SayadChequeInquiryBatchResponseDto>> batchRequest(
-        @Valid @RequestBody SayadChequeInquiryBatchRequestDto sayadChequeInquiryBatchRequest) {
-        return new ResponseEntity<>(sayadService.batchInquiry(sayadChequeInquiryBatchRequest), HttpStatus.OK);
-
-    }
-
-    @Operation(summary = "سرویس درخواست استعلام برگ چک", description = "سرویس مربوط به درخواست استعلام برگ چک")
-    @ApiResponse(responseCode = "200",
-        content = @Content(schema = @Schema(implementation = SayadChequeInquirySheetResponseDto.class)))
-    @PostMapping("/sheet-inquiry")
-    @PreAuthorize("hasAuthority('SCOPE_account-super')")
-    public ResponseEntity<List<SayadChequeInquirySheetResponseDto>> sheetRequest(
-        @Valid @RequestBody SayadChequeInquirySheetRequestDto sayadChequeInquirySheetRequest) {
-        return new ResponseEntity<>(sayadService.sheetInquiry(sayadChequeInquirySheetRequest), HttpStatus.OK);
-
-    }
 
 }
