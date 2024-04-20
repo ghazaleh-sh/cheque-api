@@ -22,7 +22,6 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/chakad")
 @RequiredArgsConstructor
 @Log4j2
 @Tag(description = "سرویس های چکاد", name = "Chakad services resources")
