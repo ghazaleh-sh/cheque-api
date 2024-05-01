@@ -8,26 +8,25 @@ import ir.co.sadad.cheque.web.rest.external.dto.response.AllocatingEstelamRespon
 import ir.co.sadad.cheque.web.rest.external.dto.response.ChequeReportResponseDto;
 import ir.co.sadad.cheque.web.rest.external.dto.response.SayadRequestResponseDto;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 @FeignClient(value = "ChequeClient", url = "${feign.client.cheque-url}", configuration = { ChequeClientConfig.class })
 public interface ChequeClient {
-    @RequestMapping(method = RequestMethod.POST, value = "${feign.client.sayadRequest-path}")
+    @PostMapping(value = "${feign.client.sayadRequest-path}")
     SayadRequestResponseDto sayadRequest(
         @RequestHeader("Authorization") String bearerToken,
         @RequestBody ChequeRegisterDto chequeRegisterDto
     );
 
-    @RequestMapping(method = RequestMethod.POST, value = "${feign.client.allocating-path}")
+    @PostMapping(value = "${feign.client.allocating-path}")
     AllocatingEstelamResponseDto getAllocatingEstelam(
         @RequestHeader("Authorization") String bearerToken,
         @RequestBody AllocatingEstelamRequestDto allocatingEstelamRequestDto
     );
 
-    @RequestMapping(method = RequestMethod.POST, value = "${feign.client.report-path}")
+    @PostMapping(value = "${feign.client.report-path}")
     ChequeReportResponseDto report(
         @RequestHeader("Authorization") String bearerToken,
         @RequestBody ChequeReportRequest chequeReportRequest

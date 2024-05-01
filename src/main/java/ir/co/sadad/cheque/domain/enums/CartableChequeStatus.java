@@ -19,7 +19,7 @@ public enum CartableChequeStatus {
 
     WAITING_CONFIRM_REJECT(7, "منتظر تایید و رد"),
 
-    CHECKOUT_PROCESSING(9, "در حال نقد شدن");
+    CHECKOUT_PROCESSING(9, "در حال وصول");
 
     private final Integer code;
     private final String description;

@@ -115,6 +115,7 @@ public interface ChakadClient {
     @RequestMapping(method = RequestMethod.POST, value = "${feign.client.deposit-register-path}")
     ChakadErrorResponseDto depositRegister(
         @RequestHeader("Authorization") String bearerToken,
+        @RequestHeader("callerTerminalName") String callerTerminalName,
         @RequestBody DepositRegisterDto depositRegisterDto
     );
 
@@ -139,6 +140,7 @@ public interface ChakadClient {
     @RequestMapping(method = RequestMethod.POST, value = "${feign.client.deposit-cancel-path}")
     ChakadErrorResponseDto depositCancel(
         @RequestHeader("Authorization") String bearerToken,
+        @RequestHeader("callerTerminalName") String callerTerminalName,
         @RequestBody DepositCancelDto depositCancelDto
     );
 }

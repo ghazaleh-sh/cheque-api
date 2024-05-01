@@ -24,6 +24,7 @@ import org.zalando.problem.Status;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -103,7 +104,7 @@ public class PichakServiceV2Impl extends PichakServiceV2 {
         if (response.getIsSuccess())
             return buildChequeBookInquiryResponse(response.getResult()
                 .stream().filter(result -> ((result.getChequeMedia() == null || !result.getChequeMedia())
-                    && result.getStatusCode().equals(ISSUED_CODE)))
+                    && (result.getStatusCode() != null && result.getStatusCode().equals(ISSUED_CODE))))
                 .collect(Collectors.toList()));
 
         throw new SayadInquiresClientException(response.getErrorCodes());
@@ -154,7 +155,9 @@ public class PichakServiceV2Impl extends PichakServiceV2 {
 
             totalResponse.add(leafResponse);
         });
-        return totalResponse;
+
+        return totalResponse.stream().sorted(Comparator.comparing(PichakLeafInquiryResponseDto::getChequeNumber))
+            .collect(Collectors.toList());
     }
 
     private ChequeInquirySheetRequestDto buildLeafInquiryRequest(Long chequeIssuedId) {

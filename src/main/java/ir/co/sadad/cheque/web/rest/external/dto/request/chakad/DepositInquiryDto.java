@@ -9,7 +9,7 @@ import lombok.Data;
 public class DepositInquiryDto {
 
     /**
-     * شناسه صیاد ( 16 رقمی)
+     * شناسه صیاد (16 رقمی)
      */
     private String sayadId;
 
@@ -21,7 +21,7 @@ public class DepositInquiryDto {
     private Integer holderIdentifierType;
 
     /**
-     * کد ملی/شناسه اتباع  واگذارنده
+     * کد ملی/شناسه اتباع واگذارنده
      * طبق الگوی کد/شناسه ملی نوع کد شناسایی
      */
     private String holderIdentifier;

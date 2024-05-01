@@ -15,7 +15,8 @@ public enum PichakRequestStatus {
     APPROVED(7, "تایید درخواست"),
     PRINTED(8, "چاپ دسته چک"),
     BRANCH_PENDING(9, "منتظر مراجعه مشتری به شعبه"),
-    UNKNOWN(0, "ناشناخته");
+    DISQUALIFIED_UNKNOWN(0, "عدم صلاحیت - سایر موارد"),
+    DISQUALIFIED_EXCEEDED_USAGE(10, "عدم صلاحیت - عدم استفاده بیشتر از 80% دسته چک قبلی");
 
     private final int code;
     private final String description;
@@ -26,6 +27,6 @@ public enum PichakRequestStatus {
                 return e;
             }
         }
-        return UNKNOWN;
+        return DISQUALIFIED_UNKNOWN;
     }
 }

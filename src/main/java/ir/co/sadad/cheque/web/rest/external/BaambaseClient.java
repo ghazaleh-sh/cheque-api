@@ -9,10 +9,7 @@ import ir.co.sadad.cheque.web.rest.external.dto.response.chakad.CreateSignatureR
 import ir.co.sadad.cheque.web.rest.external.dto.response.chakad.SignedDataResBodyDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,4 +29,9 @@ public interface BaambaseClient {
     BaamBaseResponseDto<SignedDataResBodyDto> signedData(
         @RequestHeader("Authorization") String bearerToken,
         @RequestBody SignedDataRequestDto signedDataRequestDto);
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "${feign.client.user-deactivation-path}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    BaamBaseResponseDto<Void> userDeactivation(
+        @RequestHeader("Authorization") String bearerToken,
+        @PathVariable("certificateKeyId") String certificateKeyId);
 }

@@ -1,5 +1,7 @@
 package ir.co.sadad.cheque.utils;
 
+import com.ibm.icu.util.Calendar;
+import com.ibm.icu.util.ULocale;
 import ir.co.sadad.commons.calendar.DateUtil;
 import ir.co.sadad.commons.calendar.JCalendar;
 import ir.co.sadad.commons.calendar.TimeUtil;
@@ -48,7 +50,13 @@ public class DateConvertor {
 
     public static String ConvertCurrentToJalaliWithTime() {
         String jalaliDate = JCalendar.gregorianToJalali(new Date());
-        String time = JCalendar.getTime(new Date());
+        SimpleDateFormat sdf = new SimpleDateFormat("HHmmss");
+
+        ULocale locale = new ULocale("fa_IR@calendar=persian");
+        Calendar calendar = Calendar.getInstance(locale);
+        calendar.setTime(new Date());
+
+        String time = sdf.format(calendar.getTime());
 
         return jalaliDate + time;
     }

@@ -1,0 +1,38 @@
+application {
+  config {
+    applicationType microservice
+    authenticationType jwt
+    baseName Cheque
+    blueprints []
+    buildTool maven
+    cacheProvider hazelcast
+    clientPackageManager npm
+    creationTimestamp 1638447697107
+    databaseType no
+    devDatabaseType no
+    dtoSuffix DTO
+    enableGradleEnterprise false
+    enableHibernateCache false
+    enableSwaggerCodegen false
+    enableTranslation false
+    gradleEnterpriseHost ""
+    jhiPrefix jhi
+    jhipsterVersion "7.4.0"
+    jwtSecretKey "ODYwZjhiMjU5MzQ2NWMwYjgxNjgwNTZkNzM5NjU2NWU5M2FiYmVkM2JjMjE2YWJhN2I1NWY2MThjNGJlZTYyMjY3MDNhODY1MjFhODZhMWJkZGU3OGNmOWQ1NGM0OTBjNWUxMzI0MjI1NmJjZDk0YmNkM2FjYWY5ODY3ZTVkZWY="
+    languages [en, fr]
+    messageBroker false
+    nativeLanguage en
+    otherModules []
+    packageName ir.co.sadad.cheque
+    prodDatabaseType no
+    reactive false
+    searchEngine false
+    serverPort 8081
+    serviceDiscoveryType false
+    skipClient true
+    skipUserManagement true
+    testFrameworks []
+    websocket false
+  }
+}
+

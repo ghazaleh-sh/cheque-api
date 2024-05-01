@@ -408,6 +408,7 @@ public class ChequeServiceImp implements ChequeService, AccessTokenProcessor {
         chequeRegisterDto.setIban(iban);
         chequeRegisterDto.setAccountType(0);
         chequeRegisterDto.setSheetCount(1);
+        chequeRegisterDto.setMediaType(1); // set for papar mediaType
         chequeRegisterDto.setAccountOwner(accountOwnerList);
 
         int messageCode = chequeClient.sayadRequest(sayadToken, chequeRegisterDto).getMessageCode();

@@ -54,7 +54,7 @@ class DashboardServiceImplTest {
 
     @Test
     public void convertDateCorrectly() {
-        String inputDate = "2024-03-18T20:29:59.999Z";
+        String inputDate = "2024-04-30T20:29:59.999Z";
         assertEquals("14021228", DateConvertor.convertISO8601ToJalali(inputDate));
     }
 
@@ -62,5 +62,20 @@ class DashboardServiceImplTest {
     public void encodeDescription(){
         String description = "توضیحات";
         assertEquals( "2KrZiNi224zYrdin2Ko=",Base64.getEncoder().encodeToString(description.getBytes()));
+    }
+
+    @Test
+    public void shouldConvertCurrentToJalaliWithTime(){
+        assertEquals("14030128112648", DateConvertor.ConvertCurrentToJalaliWithTime());
+    }
+
+    @Test
+    public void ShouldConvertCurrentToUTC(){
+        assertEquals("2024-04-16T06:57:07.494Z", DateConvertor.convertCurrentToUTC());
+    }
+
+    @Test
+    public void ShouldConvertPersianToUTC(){
+        assertEquals("2023-06-01T00:00:00.000Z", DateConvertor.convertToUTC("14020312"));
     }
 }

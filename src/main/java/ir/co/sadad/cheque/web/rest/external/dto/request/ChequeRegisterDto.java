@@ -13,5 +13,6 @@ public class ChequeRegisterDto {
 
     private int accountType;
     private int sheetCount;
+    private int mediaType;
     private List<AccountOwner> accountOwner;
 }

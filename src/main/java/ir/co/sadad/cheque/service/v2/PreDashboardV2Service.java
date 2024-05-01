@@ -45,5 +45,5 @@ public abstract class PreDashboardV2Service extends BaseService {
 
     public abstract SuccessClientResponseDto activation(String authToken, ActivationClientRequestDto activationClientRequestDto);
 
-    public abstract SuccessClientResponseDto deactivation(String authToken);
+    public abstract DeactivationResponseDto deactivation(String authToken);
 }

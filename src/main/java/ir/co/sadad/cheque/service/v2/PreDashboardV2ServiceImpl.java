@@ -5,6 +5,7 @@ import ir.co.sadad.cheque.domain.dto.ChakadChallengeCodeResDto;
 import ir.co.sadad.cheque.domain.dto.v2.*;
 import ir.co.sadad.cheque.domain.enums.ActivationType;
 import ir.co.sadad.cheque.domain.enums.CreateSignTestDisplay;
+import ir.co.sadad.cheque.domain.enums.RequestType;
 import ir.co.sadad.cheque.domain.enums.TokenType;
 import ir.co.sadad.cheque.management.SsoClientTokenManager;
 import ir.co.sadad.cheque.service.UserInfoService;
@@ -70,7 +71,7 @@ public class PreDashboardV2ServiceImpl extends PreDashboardV2Service {
         CertificationResBodyDto userCertification = userCertifications(authToken);
 
         ChakadChallengeCodeResDto challengeCodeRes = challengeCode(authToken,
-            buildChallengeCodeRequest(userSsn, userType, tbsActivationRequestDto.getMobileNumber()));
+            buildChallengeCodeRequest(userSsn, userType, tbsActivationRequestDto.getMobileNumber(), RequestType.ACTIVATION));
 
         String dateTime = DateConvertor.ConvertCurrentToJalaliWithTime();
 
@@ -121,9 +122,10 @@ public class PreDashboardV2ServiceImpl extends PreDashboardV2Service {
         UserInfoResponseDto currentUserInfo = userInfoService.getBy(userSsn, userType.equals(2));
 
         ChakadChallengeCodeResDto challengeCodeRes = challengeCode(authToken,
-            buildChallengeCodeRequest(userSsn, userType, currentUserInfo.getMobileNumber()));
+            buildChallengeCodeRequest(userSsn, userType, currentUserInfo.getMobileNumber(), RequestType.UPDATE_PROFILE));
 
         userInfoService.createUpdateProfileRequestUser(UserInfoDto.builder()
+            .userId(userSsn)
             .challengeCode(challengeCodeRes.getChallengeCode())
             .activationTicket(challengeCodeRes.getActivationTicketId())
             .certificateKeyId(userCertification.getCertificateKeyId())
@@ -201,7 +203,7 @@ public class PreDashboardV2ServiceImpl extends PreDashboardV2Service {
 
     @Override
     @SneakyThrows
-    public SuccessClientResponseDto deactivation(String authToken) {
+    public DeactivationResponseDto deactivation(String authToken) {
         String userSsn = getSsn();
         Integer userType = setUserType(userSsn);
 
@@ -212,10 +214,17 @@ public class PreDashboardV2ServiceImpl extends PreDashboardV2Service {
         if (!SUCCESS_CHAKAD_CODE.equals(response.getCode()))
             throw new ChakadClientException(response.getCode());
 
-        userInfoService.deactivateUserBy(userSsn, userType.equals(2));
+        UserInfoResponseDto savedUser = userInfoService.deactivateUserBy(userSsn, userType.equals(2));
 
-        return SuccessClientResponseDto.builder()
-            .isSucceeded(true).build();
+        try {
+            baambaseClient.userDeactivation(authToken, savedUser.getCertificateKeyId());
+        } catch (Exception e) {
+            return DeactivationResponseDto.builder()
+                .certificateKeyId(savedUser.getCertificateKeyId()).build();
+        }
+
+        return DeactivationResponseDto.builder()
+            .certificateKeyId(savedUser.getCertificateKeyId()).build();
     }
 
     @Override
@@ -259,10 +268,10 @@ public class PreDashboardV2ServiceImpl extends PreDashboardV2Service {
         return response;
     }
 
-    private ChallengeCodeDto buildChallengeCodeRequest(String userSsn, Integer userType, String mobileNumber) {
+    private ChallengeCodeDto buildChallengeCodeRequest(String userSsn, Integer userType, String mobileNumber, RequestType requestType) {
 
         ChallengeCodeDto challengeCodeReq = new ChallengeCodeDto();
-        challengeCodeReq.setRequestType(Integer.parseInt(requestType));
+        challengeCodeReq.setRequestType(requestType.getCode());
         challengeCodeReq.setTokenType(TokenType.NAMAD.getValue());
         challengeCodeReq.setLegalStamp(Integer.parseInt(legalStamp));
         challengeCodeReq.setMobileNumber(mobileNumber);

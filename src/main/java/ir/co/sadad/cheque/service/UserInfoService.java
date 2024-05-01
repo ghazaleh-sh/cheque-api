@@ -84,7 +84,7 @@ public interface UserInfoService {
      *
      * @param userId user id of user - ssn
      */
-    void deactivateUserBy(String userId, boolean isOrgNeeded);
+    UserInfoResponseDto deactivateUserBy(String userId, boolean isOrgNeeded);
 
     /**
      * get info of user based on userId ,

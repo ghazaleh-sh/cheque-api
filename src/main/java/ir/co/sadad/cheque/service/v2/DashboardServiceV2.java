@@ -3,6 +3,7 @@ package ir.co.sadad.cheque.service.v2;
 import ir.co.sadad.cheque.domain.dto.v2.*;
 import ir.co.sadad.cheque.management.SsoClientTokenManager;
 import ir.co.sadad.cheque.service.BaseService;
+import ir.co.sadad.cheque.web.rest.external.dto.response.chakad.DepositInquiryResponseDto;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -62,5 +63,7 @@ public abstract class DashboardServiceV2 extends BaseService {
 
     public abstract SuccessClientResponseDto depositRegister(DepositRegisterRequestDto depositRegisterRequestDto, String authToken);
 
-    public abstract SuccessClientResponseDto depositCancel(DepositCancelRequestDto cancelRequestDto, String authToken);
+    public abstract SuccessClientResponseDto depositCancel(String sayadId, String authToken);
+
+    public abstract DepositInquiryResponseDto depositInquiry(String sayadId, String authToken);
 }

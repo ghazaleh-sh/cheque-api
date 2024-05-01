@@ -7,7 +7,7 @@
 
     <groupId>ir.co.sadad.cheque</groupId>
     <artifactId>cheque</artifactId>
-    <version>1.1.4-RELEASE</version>
+    <version>1.2.7-RELEASE</version>
     <packaging>jar</packaging>
     <name>Cheque</name>
     <description>baam cheque-api</description>
@@ -25,7 +25,7 @@
     <properties>
         <!-- Build properties -->
         <maven.version>3.3.9</maven.version>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
@@ -66,7 +66,7 @@
         <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
         <jib-maven-plugin.version>3.1.4</jib-maven-plugin.version>
         <jib-maven-plugin.image>
-            docker://repo.sadad.co.ir/repository/baam-docker-registry/eclipse-temurin:11-jre-focal-02-01-16
+            docker://repo.sadad.co.ir/repository/baam-docker-registry/eclipse-temurin:17.0.6_10-jre-focal
         </jib-maven-plugin.image>
         <jib-maven-plugin.architecture>amd64</jib-maven-plugin.architecture>
         <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
@@ -304,7 +304,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.16</version>
+            <version>1.18.28</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -457,7 +457,7 @@
                             <path>
                                 <groupId>org.projectlombok</groupId>
                                 <artifactId>lombok</artifactId>
-                                <version>1.18.16</version>
+                                <version>1.18.28</version>
                             </path>
                         </annotationProcessorPaths>
                     </configuration>

@@ -31,8 +31,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static ir.co.sadad.cheque.utils.ConverterHelper.setUserType;
-import static ir.co.sadad.cheque.utils.DateConvertor.convertCurrentToUTC;
-import static ir.co.sadad.cheque.utils.DateConvertor.convertISO8601ToJalali;
+import static ir.co.sadad.cheque.utils.DateConvertor.*;
 
 /**
  * {@inheritDoc}
@@ -95,7 +94,7 @@ public class DashboardServiceV2Impl extends DashboardServiceV2 {
 
         UserCertificationResponseDto response = new UserCertificationResponseDto();
         response.setCertificateKeyId(bodyResponse.getCertificateKeyId());
-        response.setDevice(bodyResponse.getDevice());
+        response.setDevice(bodyResponse.getDeviceName());
         response.setDeviceId(bodyResponse.getDeviceId());
         response.setProductType(TokenType.NAMAD);
         response.setProductId(bodyResponse.getProductUid().toString());
@@ -175,7 +174,7 @@ public class DashboardServiceV2Impl extends DashboardServiceV2 {
         response.setDescription(savedCheque.getDescription());
         response.setSerialNumber(savedCheque.getSerialNumber());
         response.setSeriNumber(savedCheque.getSeriNumber());
-        response.setSettlementDate(savedCheque.getSettlementDate());
+        response.setSettlementDate(convertToUTC(savedCheque.getSettlementDate()));
         response.setReason(savedCheque.getChequeReason() != null ?
             savedCheque.getChequeReason().getReasonCode() : null);
         response.setResponseTime(convertCurrentToUTC());
@@ -256,6 +255,7 @@ public class DashboardServiceV2Impl extends DashboardServiceV2 {
         String userSsn = getSsn();
 
         ChakadErrorResponseDto depositRegisterResponse = chakadClient.depositRegister(getToken(),
+            getUserAgent(),
             buildDepositRegisterRequest(depositRegisterRequestDto, userSsn));
 
         if (!depositRegisterResponse.isSucceeded())
@@ -266,7 +266,7 @@ public class DashboardServiceV2Impl extends DashboardServiceV2 {
 
     @Override
     @SneakyThrows
-    public SuccessClientResponseDto depositCancel(DepositCancelRequestDto cancelRequestDto, String authToken) {
+    public SuccessClientResponseDto depositCancel(String sayadId, String authToken) {
 
 //        DepositInquiryResponseDto depositInquiryResponse = chakadClient.depositInquiry(getToken(),
 //            buildDepositInquiryRequest(cancelRequestDto.getSayadId(), null));
@@ -275,13 +275,26 @@ public class DashboardServiceV2Impl extends DashboardServiceV2 {
 //            throw new ChakadClientException(depositInquiryResponse.getMessage());
 
         ChakadErrorResponseDto cancelResponse = chakadClient.depositCancel(getToken(),
-            (DepositCancelDto) buildDepositCancelRequest(cancelRequestDto.getSayadId()));
+            getUserAgent(),
+            (DepositCancelDto) buildDepositCancelRequest(sayadId));
 //                depositInquiryResponse.getData().get(depositInquiryResponse.getData().size() - 1).getDepositId()));
 
         if (!cancelResponse.isSucceeded())
             throw new ChakadClientException(cancelResponse.getMessage());
 
         return SuccessClientResponseDto.builder().isSucceeded(true).build();
+    }
+
+    @Override
+    @SneakyThrows
+    public DepositInquiryResponseDto depositInquiry(String sayadId, String authToken) {
+        DepositInquiryResponseDto depositInquiryResponse = chakadClient.depositInquiry(getToken(),
+            buildDepositCancelRequest(sayadId));
+
+        if (!depositInquiryResponse.isSucceeded())
+            throw new ChakadClientException(depositInquiryResponse.getMessage());
+
+        return depositInquiryResponse;
     }
 
     private DepositInquiryDto buildDepositCancelRequest(String sayadId) {

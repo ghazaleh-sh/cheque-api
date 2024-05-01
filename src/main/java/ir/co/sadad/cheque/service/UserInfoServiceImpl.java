@@ -85,10 +85,10 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public void deactivateUserBy(String userId, boolean isOrgNeeded) {
+    public UserInfoResponseDto deactivateUserBy(String userId, boolean isOrgNeeded) {
         ChequeUserInfo savedUserInfo = this.getByUserId(userId, isOrgNeeded);
         savedUserInfo.setActivationResponseStatus(ActivationResponseStatus.INACTIVE);
-        userInfoRepository.saveAndFlush(savedUserInfo);
+        return mapper.toDto(userInfoRepository.saveAndFlush(savedUserInfo));
     }
 
     @Override

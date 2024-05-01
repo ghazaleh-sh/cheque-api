@@ -10,6 +10,7 @@ import ir.co.sadad.cheque.domain.dto.v2.*;
 import ir.co.sadad.cheque.service.v2.DashboardServiceV2;
 import ir.co.sadad.cheque.service.v2.PichakServiceV2;
 import ir.co.sadad.cheque.service.v2.PreDashboardV2Service;
+import ir.co.sadad.cheque.web.rest.external.dto.response.chakad.DepositInquiryResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +18,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @RestController
@@ -58,7 +61,7 @@ public class ChakadV2Controller {
 
     @Operation(summary = "سرویس غیرفعالسازی پروفایل")
     @DeleteMapping("/deactivation")
-    public SuccessClientResponseDto deactivation(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String authToken) {
+    public DeactivationResponseDto deactivation(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String authToken) {
         return preDashboardV2Service.deactivation(authToken);
     }
 
@@ -168,7 +171,18 @@ public class ChakadV2Controller {
         content = @Content(schema = @Schema(implementation = SuccessClientResponseDto.class)))
     @DeleteMapping("/deposit")
     public SuccessClientResponseDto depositCancel(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String authToken,
-                                                  @Valid @RequestBody DepositCancelRequestDto cancelRequestDto) {
-        return dashboardService.depositCancel(cancelRequestDto, authToken);
+                                                  @Valid @RequestParam(name = "sayadId")
+                                                  @NotBlank @Size(min = 16, max = 16, message = "chakad.error.sayad.sayad.id.length.invalid") String sayadId) {
+        return dashboardService.depositCancel(sayadId, authToken);
+    }
+
+    @Operation(summary = "سرویس استعلام واگذاری چک")
+    @ApiResponse(responseCode = "200",
+        content = @Content(schema = @Schema(implementation = DepositInquiryResponseDto.class)))
+    @GetMapping("/depositinquiry")
+    public DepositInquiryResponseDto depositInquiry(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String authToken,
+                                                    @Valid @RequestParam(name = "sayadId")
+                                                    @NotBlank @Size(min = 16, max = 16, message = "chakad.error.sayad.sayad.id.length.invalid") String sayadId) {
+        return dashboardService.depositInquiry(sayadId, authToken);
     }
 }
