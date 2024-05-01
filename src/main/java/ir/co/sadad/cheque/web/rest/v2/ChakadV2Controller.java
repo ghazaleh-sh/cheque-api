@@ -23,16 +23,13 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v2/chakad")
 @RequiredArgsConstructor
 @Log4j2
 @Tag(description = "سرویس های چکاد", name = "Chakad services resources V2 version ")
 public class ChakadV2Controller {
 
-    private final PreDashboardV2Service preDashboardV2Service;
-    private final DashboardServiceV2 dashboardService;
-    private final PichakServiceV2 pichakService;
 
+<<<<<<< HEAD
     @GetMapping("/inquiryStatus")
     @PreAuthorize("hasAuthority('SCOPE_account-super')")
     public InquiryStatusFinalResDto inquiryStatus(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String authToken) {
@@ -185,4 +182,6 @@ public class ChakadV2Controller {
                                                     @NotBlank @Size(min = 16, max = 16, message = "chakad.error.sayad.sayad.id.length.invalid") String sayadId) {
         return dashboardService.depositInquiry(sayadId, authToken);
     }
+=======
+>>>>>>> 97c6aad074c286d871f05dda6db7eb7b7be7e844
 }

@@ -14,61 +14,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
 @RequiredArgsConstructor
 @Log4j2
 public class ChequeController {
 
-    private final ChequeService chequeService;
-    private final ChequeRepository chequeRepository;
-    private final SsoClientTokenManager ssoClientTokenManager;
-
-    @PostMapping("/v1")
-    @PreAuthorize("hasAuthority('SCOPE_account-super')")
-    public ChequeRequestResponse chequeRequest(@Valid @RequestBody ChequeRequestDto chequeRequestDto) {
-        return chequeService.chequeRequest(chequeRequestDto);
-    }
-
-    @PostMapping("/request")
-    @PreAuthorize("hasAuthority('SCOPE_account-super')")
-    public ChequeRequestResponse chequeRequestV2(@Valid @RequestBody ChequeRequestDto chequeRequestDto) {
-        return chequeService.chequeRequestV2(chequeRequestDto);
-    }
-
-    @GetMapping("/bounced-inquiry")
-    @PreAuthorize("hasAuthority('SCOPE_account-super')")
-    public BouncedChequeResponseDto bouncedInquiry() {
-        return chequeService.bouncedInquiry();
-    }
-
-    @GetMapping("/bounced-inquiry/{ssn}")
-    @PreAuthorize("hasAuthority('SCOPE_baamnet-cheque-bounced-inquiry')")
-    public BouncedChequeResponseDto bouncedInquiryWithSsn(@PathVariable("ssn") String ssn) {
-        return chequeService.bouncedInquiryWithSsn(ssn);
-    }
-
-    @PostMapping("/AllocatingInquiry")
-    @PreAuthorize("hasAuthority('SCOPE_account-super')")
-    public AllocatingEstelamResponseDto getChequeAllocatingInquiry(
-        @Valid @RequestBody AllocatingInquiryRequestDto allocatingInquiryRequestDto
-    ) {
-        return chequeService.chequeAllocatingInquiry(allocatingInquiryRequestDto);
-    }
-
-    @GetMapping("/request-inquiry")
-    @PreAuthorize("hasAuthority('SCOPE_account-super')")
-    public ChequeResponse requestInquiry(
-        @RequestParam String iban,
-        @RequestParam Integer timeInterval,
-        @RequestParam(required = false) Integer pageNumber,
-        @RequestParam(required = false) Integer pageSize
-    ) {
-        return chequeService.report(iban, timeInterval);
-    }
-
-    @GetMapping("/getAll")
-    public List<Cheque> getAllCheques() {
-        String ss = ssoClientTokenManager.getClientToken();
-        return chequeRepository.findAll();
-    }
 }
